@@ -1,0 +1,240 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #050b11;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+.hero {
+  background:
+    radial-gradient(ellipse at 75% 35%, rgba(119, 0, 20, 0.4), transparent 43%),
+    linear-gradient(110deg, #050b11 0%, #07111a 58%, #14060b 100%);
+}
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 11, 17, 0.2), transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 44px,
+      rgba(255, 23, 56, 0.025) 45px 46px
+    );
+  pointer-events: none;
+}
+.hero-vehicle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 59%;
+  overflow: hidden;
+}
+.hero-vehicle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.72;
+  mix-blend-mode: screen;
+  mask-image: linear-gradient(to right, transparent 0%, black 28%, black 100%);
+}
+.nav-link {
+  position: relative;
+  padding: 25px 13px 23px;
+  font-size: 12px;
+  color: #c5d0db;
+  transition: color 0.2s;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: #ff1738;
+}
+.nav-link.active:after {
+  position: absolute;
+  content: "";
+  bottom: 0;
+  left: 13px;
+  right: 13px;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: #ff1738;
+}
+.icon-btn {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 8px;
+  color: #dbe4ec;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.icon-btn:hover {
+  background: #12212d;
+  color: #ff1738;
+}
+.type-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 88px;
+  border: 1px solid #294354;
+  border-radius: 9px;
+  padding: 9px 15px;
+  font-size: 12px;
+  color: #dce5ed;
+  transition: all 0.2s;
+}
+.type-btn:hover,
+.type-btn.chosen {
+  border-color: #ff1738;
+  background: rgba(255, 23, 56, 0.13);
+  color: white;
+  box-shadow: inset 0 0 0 1px rgba(255, 23, 56, 0.15);
+}
+.vehicle-card {
+  overflow: hidden;
+  border: 1px solid #1c3545;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #07131d, #050c12);
+  transition:
+    transform 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.vehicle-card:hover {
+  transform: translateY(-2px);
+  border-color: #4a2935;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+.vehicle-image {
+  height: 150px;
+  overflow: hidden;
+  background: #0c1721;
+}
+.vehicle-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s;
+}
+.vehicle-card:hover .vehicle-image img {
+  transform: scale(1.04);
+}
+.field {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+  border: 1px solid #294354;
+  border-radius: 8px;
+  background: #07121c;
+  padding: 10px 11px;
+  color: #e8eef4;
+  font-size: 12px;
+  outline: none;
+}
+.field:focus {
+  border-color: #ff1738;
+  box-shadow: 0 0 0 2px rgba(255, 23, 56, 0.1);
+}
+.field option {
+  background: #07121c;
+}
+.filter-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #dce5ed;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.form-grid .filter-label {
+  font-weight: 500;
+}
+.page-btn {
+  display: grid;
+  min-width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid #1c3545;
+  border-radius: 8px;
+  background: #07121c;
+  padding: 0 10px;
+  font-size: 12px;
+}
+.page-btn:hover,
+.page-btn.current {
+  border-color: #ff1738;
+  background: #ff1738;
+  color: white;
+}
+.page-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.social-btn {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid #263b4a;
+  border-radius: 9px;
+  color: #c7d1db;
+  transition: all 0.2s;
+}
+.social-btn:hover {
+  border-color: #ff1738;
+  background: rgba(255, 23, 56, 0.12);
+  color: #ff1738;
+}
+@media (max-width: 760px) {
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .vehicle-image {
+    height: 165px;
+  }
+}
+@media (max-width: 480px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .vehicle-image {
+    height: 190px;
+  }
+}
