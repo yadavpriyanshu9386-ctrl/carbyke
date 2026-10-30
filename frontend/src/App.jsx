@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { vehicles } from "./data/vehicles.js";
 import VehicleModal from "./components/vehicles/VehicleModal.jsx";
 import SellPage from "./pages/SellPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
 import RentPage from "./pages/RentPage.jsx";
 import MyListings from "./pages/MyListings.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
@@ -11,7 +12,7 @@ import Footer from "./components/layout/Footer.jsx";
 import LoginModal from "./components/auth/LoginModal.jsx";
 
 function App() {
-  const [page, setPage] = useState("Buy");
+  const [page, setPage] = useState("Home");
   const [type, setType] = useState("All");
   const [search, setSearch] = useState("");
   const [brand, setBrand] = useState("All brands");
@@ -81,35 +82,40 @@ function App() {
         setMobileMenu={setMobileMenu}
       />
 
-      {page === "Buy" || page === "Home" || page === "Wishlist" ? (
-        <BuyPage
-          page={page}
-          type={type}
-          setType={setType}
-          search={search}
-          setSearch={setSearch}
-          brand={brand}
-          setBrand={setBrand}
-          fuel={fuel}
-          setFuel={setFuel}
-          maxPrice={maxPrice}
-          setMaxPrice={setMaxPrice}
-          sort={sort}
-          setSort={setSort}
-          view={view}
-          setView={setView}
-          showFilters={showFilters}
-          setShowFilters={setShowFilters}
-          filtered={filtered}
-          wishlist={wishlist}
-          toggleWish={toggleWish}
-          setSelected={setSelected}
-          setToast={setToast}
-          navigate={navigate}
-        />
-      ) : null}
+      {page === "Home" && (
+  <HomePage
+    navigate={navigate}
+    setSearch={setSearch}
+  />
+)}
 
-
+{(page === "Buy" || page === "Wishlist") && (
+  <BuyPage
+    page={page}
+    type={type}
+    setType={setType}
+    search={search}
+    setSearch={setSearch}
+    brand={brand}
+    setBrand={setBrand}
+    fuel={fuel}
+    setFuel={setFuel}
+    maxPrice={maxPrice}
+    setMaxPrice={setMaxPrice}
+    sort={sort}
+    setSort={setSort}
+    view={view}
+    setView={setView}
+    showFilters={showFilters}
+    setShowFilters={setShowFilters}
+    filtered={filtered}
+    wishlist={wishlist}
+    toggleWish={toggleWish}
+    setSelected={setSelected}
+    setToast={setToast}
+    navigate={navigate}
+  />
+)}
       {page === "Sell" && (
         <SellPage
           sellType={sellType}

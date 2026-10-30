@@ -1,3 +1,4 @@
+
 import {
   CarFront,
   Heart,
@@ -7,43 +8,68 @@ import {
   X,
 } from "lucide-react";
 
-function Navbar({ page, navigate, wishlistCount, onLogin, mobileMenu, setMobileMenu }) {
+function Navbar({
+  page,
+  navigate,
+  wishlistCount,
+  onLogin,
+  mobileMenu,
+  setMobileMenu,
+}) {
+  const navItems = [
+    "Home",
+    "Buy",
+    "Sell",
+    "Rent",
+    "My Listings",
+    "Wishlist",
+    "About Us",
+  ];
+
+  const handleNavigation = (item) => {
+  navigate(item);
+};
+
   return (
     <header className="sticky top-0 z-40 border-b border-line/80 bg-[#040a10]/95 backdrop-blur-xl">
-      <div className="mx-auto flex h-[68px] max-w-[1500px] items-center justify-between px-4 lg:px-8">
+      <div className="mx-auto flex min-h-[76px] max-w-[1500px] items-center justify-between gap-4 px-4 lg:px-8">
+
+        {/* LOGO */}
         <button
-          className="flex items-center gap-2.5 text-left"
+          className="flex shrink-0 items-center gap-2.5 text-left"
           onClick={() => navigate("Buy")}
-          aria-label="DriveDeals home"
+          aria-label="CARBYKE home"
         >
           <span className="grid h-10 w-12 place-items-center text-red">
             <CarFront size={42} strokeWidth={1.8} />
           </span>
+
           <span>
             <span className="block text-[22px] font-extrabold leading-5 tracking-tight">
-              Drive<span className="text-red">Deals</span>
+              CAR<span className="text-red">BYKE</span>
             </span>
             <span className="text-[10px] tracking-wider text-slate-300">
               Buy · Sell · Rent
             </span>
           </span>
         </button>
-        <nav className="hidden items-center gap-1 md:flex">
-          {[
-            "Home",
-            "Buy",
-            "Sell",
-            "Rent",
-            "My Listings",
-            "Wishlist",
-            "About Us",
-          ].map((item) => (
+
+        {/* DESKTOP NAVIGATION BOX */}
+        <nav
+          aria-label="Main navigation"
+          className="nav-dock hidden items-center gap-1 md:flex"
+        >
+          {navItems.map((item) => (
             <button
               key={item}
-              onClick={() => navigate(item === "Home" ? "Buy" : item)}
-              className={`nav-link ${page === item ? "active" : ""}`}
+              onClick={() => handleNavigation(item)}
+              className={`nav-link ${
+                item === "Rent" ? "rent-link" : ""
+              } ${page === item ? "active" : ""}`}
+              aria-current={page === item ? "page" : undefined}
             >
               {item}
+
               {item === "Wishlist" && wishlistCount > 0 && (
                 <span className="ml-1 rounded-full bg-red px-1.5 text-[10px]">
                   {wishlistCount}
@@ -52,7 +78,9 @@ function Navbar({ page, navigate, wishlistCount, onLogin, mobileMenu, setMobileM
             </button>
           ))}
         </nav>
-        <div className="flex items-center gap-2">
+
+        {/* RIGHT SIDE BUTTONS */}
+        <div className="flex shrink-0 items-center gap-2">
           <button
             className="icon-btn hidden sm:grid"
             title="Search"
@@ -63,6 +91,7 @@ function Navbar({ page, navigate, wishlistCount, onLogin, mobileMenu, setMobileM
           >
             <Search size={19} />
           </button>
+
           <button
             className="icon-btn relative hidden sm:grid"
             title="Wishlist"
@@ -75,19 +104,22 @@ function Navbar({ page, navigate, wishlistCount, onLogin, mobileMenu, setMobileM
               </span>
             )}
           </button>
+
           <button
             className="icon-btn hidden sm:grid"
             title="Account"
-            onClick={() => onLogin()}
+            onClick={onLogin}
           >
             <UserRound size={19} />
           </button>
+
           <button
             className="rounded-lg border border-red px-3 py-2 text-xs font-semibold transition hover:bg-red sm:px-4 sm:text-sm"
-            onClick={() => onLogin()}
+            onClick={onLogin}
           >
             Login / Sign Up
           </button>
+
           <button
             className="icon-btn md:hidden"
             onClick={() => setMobileMenu(!mobileMenu)}
@@ -96,21 +128,22 @@ function Navbar({ page, navigate, wishlistCount, onLogin, mobileMenu, setMobileM
           </button>
         </div>
       </div>
+
+      {/* MOBILE NAVIGATION */}
       {mobileMenu && (
         <div className="grid grid-cols-2 gap-2 border-t border-line p-3 md:hidden">
-          {[
-            "Home",
-            "Buy",
-            "Sell",
-            "Rent",
-            "My Listings",
-            "Wishlist",
-            "About Us",
-          ].map((item) => (
+          {navItems.map((item) => (
             <button
               key={item}
-              className="rounded-lg bg-panel p-3 text-sm"
-              onClick={() => navigate(item === "Home" ? "Buy" : item)}
+              className={`rounded-lg p-3 text-sm ${
+                item === "Rent"
+                  ? "rent-link"
+                  : "bg-panel"
+              }`}
+              onClick={() => {
+                handleNavigation(item);
+                setMobileMenu(false);
+              }}
             >
               {item}
             </button>
@@ -122,3 +155,4 @@ function Navbar({ page, navigate, wishlistCount, onLogin, mobileMenu, setMobileM
 }
 
 export default Navbar;
+
