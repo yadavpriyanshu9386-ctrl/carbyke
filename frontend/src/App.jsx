@@ -4,6 +4,8 @@ import VehicleModal from "./components/vehicles/VehicleModal.jsx";
 import SellPage from "./pages/SellPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import RentPage from "./pages/RentPage.jsx";
+import ReviewsPage from "./components/HumBurger/ReviewsPage.jsx";
+import ContactPage from "./components/HumBurger/ContactPage.jsx";
 import MyListings from "./pages/MyListings.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
 import BuyPage from "./pages/BuyPage.jsx";
@@ -28,8 +30,8 @@ function App() {
   const [sellSubmitted, setSellSubmitted] = useState(false);
   const [rentDays, setRentDays] = useState("Daily");
   const [loginOpen, setLoginOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showFilters, setShowFilters] = useState(true);
-
 
   const filtered = useMemo(() => {
     let list = vehicles.filter(
@@ -60,16 +62,27 @@ function App() {
     setTimeout(() => setToast(""), 1800);
   };
   const navigate = (p) => {
-    setPage(p);
-    setSelected(null);
-    setMobileMenu(false);
-    if (p !== "Buy" && p !== "Wishlist") {
-      setSearch("");
-      setType("All");
-    }
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  if (
+    !isLoggedIn &&
+    (p === "Wishlist" || p === "My Listings")
+  ) {
+    setToast("Please login to continue");
+    setLoginOpen(true);
+    setTimeout(() => setToast(""), 1800);
+    return;
+  }
 
+  setPage(p);
+  setSelected(null);
+  setMobileMenu(false);
+
+  if (p !== "Buy" && p !== "Wishlist") {
+    setSearch("");
+    setType("All");
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
 
   return (
     <div className="min-h-screen bg-ink text-slate-100">
@@ -80,42 +93,40 @@ function App() {
         onLogin={() => setLoginOpen(true)}
         mobileMenu={mobileMenu}
         setMobileMenu={setMobileMenu}
+        isLoggedIn={isLoggedIn}
       />
 
       {page === "Home" && (
-  <HomePage
-    navigate={navigate}
-    setSearch={setSearch}
-  />
-)}
+        <HomePage navigate={navigate} setSearch={setSearch} />
+      )}
 
-{(page === "Buy" || page === "Wishlist") && (
-  <BuyPage
-    page={page}
-    type={type}
-    setType={setType}
-    search={search}
-    setSearch={setSearch}
-    brand={brand}
-    setBrand={setBrand}
-    fuel={fuel}
-    setFuel={setFuel}
-    maxPrice={maxPrice}
-    setMaxPrice={setMaxPrice}
-    sort={sort}
-    setSort={setSort}
-    view={view}
-    setView={setView}
-    showFilters={showFilters}
-    setShowFilters={setShowFilters}
-    filtered={filtered}
-    wishlist={wishlist}
-    toggleWish={toggleWish}
-    setSelected={setSelected}
-    setToast={setToast}
-    navigate={navigate}
-  />
-)}
+      {(page === "Buy" || page === "Wishlist") && (
+        <BuyPage
+          page={page}
+          type={type}
+          setType={setType}
+          search={search}
+          setSearch={setSearch}
+          brand={brand}
+          setBrand={setBrand}
+          fuel={fuel}
+          setFuel={setFuel}
+          maxPrice={maxPrice}
+          setMaxPrice={setMaxPrice}
+          sort={sort}
+          setSort={setSort}
+          view={view}
+          setView={setView}
+          showFilters={showFilters}
+          setShowFilters={setShowFilters}
+          filtered={filtered}
+          wishlist={wishlist}
+          toggleWish={toggleWish}
+          setSelected={setSelected}
+          setToast={setToast}
+          navigate={navigate}
+        />
+      )}
       {page === "Sell" && (
         <SellPage
           sellType={sellType}
@@ -129,6 +140,8 @@ function App() {
       )}
       {page === "My Listings" && <MyListings onSell={() => navigate("Sell")} />}
       {page === "About Us" && <AboutPage />}
+      {page === "Reviews" && <ReviewsPage />}
+      {page === "Contact Us" && <ContactPage />}
 
       <Footer navigate={navigate} />
 
