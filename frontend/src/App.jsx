@@ -31,7 +31,7 @@ function App() {
   const [rentDays, setRentDays] = useState("Daily");
   const [loginOpen, setLoginOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showFilters, setShowFilters] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
 
   const filtered = useMemo(() => {
     let list = vehicles.filter(
@@ -62,27 +62,24 @@ function App() {
     setTimeout(() => setToast(""), 1800);
   };
   const navigate = (p) => {
-  if (
-    !isLoggedIn &&
-    (p === "Wishlist" || p === "My Listings")
-  ) {
-    setToast("Please login to continue");
-    setLoginOpen(true);
-    setTimeout(() => setToast(""), 1800);
-    return;
-  }
+    if (!isLoggedIn && (p === "Wishlist" || p === "My Listings")) {
+      setToast("Please login to continue");
+      setLoginOpen(true);
+      setTimeout(() => setToast(""), 1800);
+      return;
+    }
 
-  setPage(p);
-  setSelected(null);
-  setMobileMenu(false);
+    setPage(p);
+    setSelected(null);
+    setMobileMenu(false);
 
-  if (p !== "Buy" && p !== "Wishlist") {
-    setSearch("");
-    setType("All");
-  }
+    if (p !== "Buy" && p !== "Wishlist") {
+      setSearch("");
+      setType("All");
+    }
 
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen bg-ink text-slate-100">
