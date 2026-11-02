@@ -222,7 +222,7 @@ function BuyPage({
 
         {/* HERO SECTION */}
         <section className="relative isolate min-h-[570px] overflow-hidden border-b border-white/10 bg-transparent sm:min-h-[600px]">
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-black/30" />
+          <div className="pointer-events-none absolute inset-0 -z-10" />
 
           <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-[#08080b]/90 via-[#08080b]/65 to-[#08080b]/20" />
 

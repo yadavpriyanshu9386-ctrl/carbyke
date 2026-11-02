@@ -1,3 +1,4 @@
+import ListRent from "./ListRent.jsx";
 import { useMemo, useState, useEffect } from "react";
 import { money } from "../utils/format.js";
 import VideoBackground from "../components/Background/VideoBackground";
@@ -15,6 +16,7 @@ function RentPage({ days = "Daily", setDays, vehicles = [] }) {
   const [minYear, setMinYear] = useState("");
   const [sortBy, setSortBy] = useState("recommended");
   const [currentPage, setCurrentPage] = useState(1);
+  const [showListRent, setShowListRent] = useState(false);
 
   const itemsPerPage = 6;
   const selectedPeriod = days || "Daily";
@@ -164,9 +166,11 @@ function RentPage({ days = "Daily", setDays, vehicles = [] }) {
   };
 
   const handleListVehicle = () => {
-    // Connect your separate ListVehicle file here later.
-    alert("List Your Vehicle form will be connected here.");
+    setShowListRent(true);
   };
+  if (showListRent) {
+    return <ListRent onBack={() => setShowListRent(false)} />;
+  }
 
   return (
     <main className="rent-page relative isolate min-h-screen overflow-x-hidden bg-[#08080b] text-white">
@@ -266,7 +270,7 @@ function RentPage({ days = "Daily", setDays, vehicles = [] }) {
         {/* HERO SECTION */}
         <section className="relative isolate overflow-hidden border-b border-white/5 bg-black/25">
           {/* VIDEO OVERLAYS */}
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-black/35" />
+          <div className="pointer-events-none absolute inset-0 -z-10 " />
 
           <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-[#08080b]/80 via-[#08080b]/35 to-transparent" />
 
