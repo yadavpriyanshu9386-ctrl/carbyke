@@ -257,7 +257,101 @@ function RentPage({ days = "Daily", setDays, vehicles = [] }) {
             color: white;
             box-shadow: 0 0 16px rgba(220,38,38,.12);
           }
+/* SLOW HERO TEXT REVEAL */
+@keyframes rentSlowReveal {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
 
+.rent-slow-text {
+  opacity: 0;
+  animation: rentSlowReveal 1.35s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.rent-delay-1 { animation-delay: .25s; }
+.rent-delay-2 { animation-delay: .55s; }
+.rent-delay-3 { animation-delay: .85s; }
+.rent-delay-4 { animation-delay: 1.15s; }
+
+/* TWO HERO ACTION BOXES */
+.rent-choice-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(239, 68, 68, .35);
+  border-radius: 24px;
+  background: linear-gradient(
+    135deg,
+    rgba(8, 8, 11, .96) 5%,
+    rgba(127, 29, 29, .72) 100%
+  );
+  box-shadow: 0 15px 45px rgba(0, 0, 0, .35);
+  opacity: 0;
+  animation: rentSlowReveal 1.6s cubic-bezier(.22, 1, .36, 1) forwards;
+  transition:
+    transform .65s ease,
+    border-color .65s ease,
+    box-shadow .65s ease,
+    background .65s ease;
+}
+
+.rent-choice-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    circle at top right,
+    rgba(239, 68, 68, .28),
+    transparent 65%
+  );
+  opacity: .8;
+  transition: opacity .65s ease;
+}
+
+.rent-choice-card:hover {
+  transform: translateY(-9px) scale(1.015);
+  border-color: rgba(248, 113, 113, .8);
+  box-shadow: 0 22px 55px rgba(127, 29, 29, .3);
+}
+
+.rent-choice-card:hover::before {
+  opacity: 1;
+}
+
+.rent-choice-one { animation-delay: .65s; }
+.rent-choice-two { animation-delay: 1.05s; }
+
+.rent-choice-button {
+  transition: transform .45s ease, box-shadow .45s ease,
+    background .45s ease;
+}
+
+.rent-choice-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(220, 38, 38, .3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rent-slow-text,
+  .rent-choice-card {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .rent-choice-card,
+  .rent-choice-button {
+    transition: none !important;
+  }
+}
           @media (prefers-reduced-motion: reduce) {
             .rent-gradient-text,
             .rent-fade-up,
@@ -268,11 +362,12 @@ function RentPage({ days = "Daily", setDays, vehicles = [] }) {
         `}</style>
 
         {/* HERO SECTION */}
+        {/* HERO SECTION */}
         <section className="relative isolate overflow-hidden border-b border-white/5 bg-black/25">
           {/* VIDEO OVERLAYS */}
-          <div className="pointer-events-none absolute inset-0 -z-10 " />
+          <div className="pointer-events-none absolute inset-0 -z-10" />
 
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-[#08080b]/80 via-[#08080b]/35 to-transparent" />
+          <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-[#08080b]/85 via-[#08080b]/45 to-transparent" />
 
           <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-[#08080b]/90 via-transparent to-black/20" />
 
@@ -280,41 +375,95 @@ function RentPage({ days = "Daily", setDays, vehicles = [] }) {
           <div className="pointer-events-none absolute -right-20 top-10 -z-10 h-72 w-72 rounded-full bg-red-700/25 blur-[110px]" />
 
           <div className="mx-auto max-w-[1400px] px-5 py-14 md:py-20 lg:px-8">
-            <div className="grid items-center gap-10 lg:grid-cols-[1.4fr_.8fr]">
-              <div className="rent-fade-up">
-                <span className="inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-2 text-[10px] font-extrabold uppercase tracking-[.22em] text-red-300">
+            <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_.95fr]">
+              {/* LEFT SIDE CONTENT */}
+              <div>
+                <span className="rent-slow-text rent-delay-1 inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-2 text-[10px] font-extrabold uppercase tracking-[.22em] text-red-300">
                   <span className="h-2 w-2 rounded-full bg-red-500 rent-glow" />
                   CARBYKE Rental Marketplace
                 </span>
 
-                <h1 className="mt-6 text-4xl font-black leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                <h1 className="rent-slow-text rent-delay-2 mt-6 text-4xl font-black leading-tight tracking-tight sm:text-5xl lg:text-6xl">
                   <span className="rent-gradient-text">Your next TRIP,</span>
                   <br />
                   <span className="rent-gradient-text">Your way.</span>
                 </h1>
 
-                <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-                  Find the right car or bike for your next journey, or turn your
-                  own vehicle into an earning opportunity with CARBYKE.
+                <p className="rent-slow-text rent-delay-3 mt-5 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
+                  Every journey deserves the right ride. Discover cars and bikes
+                  that match your plans, enjoy the freedom of flexible rentals,
+                  and make every trip memorable with CARBYKE.
                 </p>
 
-                <div className="mt-8 flex flex-wrap gap-3">
+                <div className="rent-slow-text rent-delay-4 mt-7 flex flex-wrap gap-3 text-xs font-semibold text-slate-300">
+                  <span className="rounded-full border border-white/10 bg-white/[.04] px-4 py-2">
+                    🚘 Cars & Bikes
+                  </span>
+                  <span className="rounded-full border border-white/10 bg-white/[.04] px-4 py-2">
+                    ✦ Flexible Rentals
+                  </span>
+                  <span className="rounded-full border border-white/10 bg-white/[.04] px-4 py-2">
+                    📍 Find Your Ride
+                  </span>
+                </div>
+              </div>
+
+              {/* RIGHT SIDE: TWO ACTION BOXES */}
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                {/* EXPLORE BOX */}
+                <div className="rent-choice-card rent-choice-one group p-6 sm:p-7">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-red-400/30 bg-red-600/20 text-3xl shadow-lg shadow-red-950/30 transition duration-500 group-hover:scale-110 group-hover:rotate-3">
+                    🚘
+                  </div>
+
+                  <p className="mt-6 text-[10px] font-extrabold uppercase tracking-[.22em] text-red-300">
+                    Discover your next ride
+                  </p>
+
+                  <h2 className="mt-3 text-2xl font-black text-white">
+                    Explore Vehicles
+                  </h2>
+
+                  <p className="mt-3 min-h-[105px] text-sm leading-7 text-slate-300">
+                    Looking for a car for a road trip or a bike for a quick
+                    ride? Explore available vehicles, compare rental prices and
+                    find the ride that fits your journey.
+                  </p>
+
                   <a
                     href="#rent-listings"
-                    className="rent-glow inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-red-700 to-red-500 px-6 py-3.5 text-sm font-extrabold text-white transition duration-300 hover:-translate-y-1 hover:from-red-600 hover:to-red-400"
+                    className="rent-choice-button mt-6 inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-red-700 to-red-500 px-5 py-3.5 text-sm font-extrabold text-white"
                   >
-                    Explore Vehicles <span className="ml-2">→</span>
+                    Explore Now <span className="ml-2">→</span>
                   </a>
+                </div>
+
+                {/* LIST YOUR VEHICLE BOX */}
+                <div className="rent-choice-card rent-choice-two group p-6 sm:p-7">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-red-400/30 bg-red-600/20 text-3xl shadow-lg shadow-red-950/30 transition duration-500 group-hover:scale-110 group-hover:rotate-3">
+                    🔑
+                  </div>
+
+                  <p className="mt-6 text-[10px] font-extrabold uppercase tracking-[.22em] text-red-300">
+                    Turn your vehicle into value
+                  </p>
+
+                  <h2 className="mt-3 text-2xl font-black text-white">
+                    List Your Vehicle
+                  </h2>
+
+                  <p className="mt-3 min-h-[105px] text-sm leading-7 text-slate-300">
+                    Have a car or bike sitting idle? Give it a chance to earn.
+                    List your vehicle on CARBYKE, showcase it to potential
+                    renters and create a new earning opportunity.
+                  </p>
 
                   <button
                     type="button"
                     onClick={handleListVehicle}
-                    className="group inline-flex items-center justify-center rounded-xl border border-red-500/60 bg-white/[.04] px-6 py-3.5 text-sm font-extrabold text-white transition duration-300 hover:-translate-y-1 hover:border-red-400 hover:bg-red-600/15 hover:shadow-[0_0_28px_rgba(220,38,38,.25)]"
+                    className="rent-choice-button mt-6 inline-flex w-full items-center justify-center rounded-xl border border-red-400/50 bg-black/40 px-5 py-3.5 text-sm font-extrabold text-white hover:bg-red-600/20"
                   >
-                    <span className="mr-2 text-lg text-red-400 transition group-hover:scale-125">
-                      +
-                    </span>
-                    List Your Vehicle
+                    List Your Vehicle <span className="ml-2">→</span>
                   </button>
                 </div>
               </div>

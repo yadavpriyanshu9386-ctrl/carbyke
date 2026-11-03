@@ -1,10 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
   Search,
   CarFront,
-  Bike,
   KeyRound,
   ShieldCheck,
   BadgeCheck,
@@ -12,7 +11,6 @@ import {
   Sparkles,
   Gauge,
   CheckCircle2,
-  ChevronDown,
   MoveUpRight,
 } from "lucide-react";
 
@@ -22,402 +20,610 @@ import homeVideo from "../components/Background/Home.bg.mp4";
 const categories = [
   {
     title: "Luxury Cars",
-    subtitle: "Experience premium driving",
+    subtitle: "Experience premium comfort",
     image:
-      "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1100&q=90",
-    number: "01",
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1000&q=85",
+    type: "Cars",
   },
   {
     title: "Sports Cars",
-    subtitle: "Power. Performance. Passion.",
+    subtitle: "Feel the adrenaline",
     image:
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1100&q=90",
-    number: "02",
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1000&q=85",
+    type: "Cars",
   },
   {
     title: "Motorcycles",
-    subtitle: "Find your next adventure",
+    subtitle: "Ride beyond limits",
     image:
-      "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1100&q=90",
+      "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=85",
+    type: "Bikes",
+  },
+];
+
+const services = [
+  {
+    title: "Buy a Vehicle",
+    description:
+      "Explore a wide range of pre-owned cars and bikes. Find the ride that matches your style and budget.",
+    icon: CarFront,
+    number: "01",
+    action: "Explore Vehicles",
+    page: "Buy",
+  },
+  {
+    title: "Sell Your Vehicle",
+    description:
+      "List your car or bike and connect with people searching for their next ride.",
+    icon: BadgeCheck,
+    number: "02",
+    action: "Start Selling",
+    page: "Sell",
+  },
+  {
+    title: "Rent a Vehicle",
+    description:
+      "Discover flexible rental options for your trips, daily commute and weekend plans.",
+    icon: KeyRound,
     number: "03",
+    action: "Explore Rentals",
+    page: "Rent",
+  },
+];
+
+const heroCards = [
+  {
+    number: "01",
+    title: "Buy & Discover",
+    description: "Explore pre-owned cars and bikes across brands and budgets.",
+    icon: CarFront,
+    color: "from-red-500/20 to-rose-500/5",
+  },
+  {
+    number: "02",
+    title: "Sell with Ease",
+    description:
+      "Create your listing and connect with people looking for their next ride.",
+    icon: BadgeCheck,
+    color: "from-purple-500/20 to-red-500/5",
+  },
+  {
+    number: "03",
+    title: "Rent & Ride",
+    description: "Find a vehicle for your trip, commute or weekend plan.",
+    icon: KeyRound,
+    color: "from-blue-500/20 to-red-500/5",
+  },
+  {
+    number: "04",
+    title: "One Mobility Hub",
+    description: "One platform bringing buyers, sellers and renters together.",
+    icon: ShieldCheck,
+    color: "from-rose-500/20 to-slate-500/5",
   },
 ];
 
 const features = [
   {
-    icon: ShieldCheck,
     title: "Trusted Marketplace",
-    text: "Explore vehicles with clear details and seller information.",
+    description:
+      "A simple platform designed to make your vehicle journey easier.",
+    icon: ShieldCheck,
   },
   {
-    icon: BadgeCheck,
     title: "More Choices",
-    text: "Discover cars and bikes across brands and budgets.",
-  },
-  {
-    icon: Headphones,
-    title: "Simple Experience",
-    text: "A convenient experience for buyers, sellers and renters.",
-  },
-  {
+    description: "Explore different cars and bikes in one convenient place.",
     icon: Gauge,
-    title: "Your Perfect Ride",
-    text: "Find a vehicle that matches your lifestyle.",
+  },
+  {
+    title: "Simple Experience",
+    description:
+      "Discover, compare and explore without unnecessary complications.",
+    icon: Sparkles,
+  },
+  {
+    title: "Here to Help",
+    description: "A user-friendly experience for every step of your journey.",
+    icon: Headphones,
   },
 ];
 
-function HomePage({ navigate, setSearch }) {
-  const [query, setQuery] = useState("");
+export default function HomePage({ navigate, setSearch }) {
+  const [searchValue, setSearchValue] = useState("");
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setSearch(query);
-    navigate("Buy");
+
+    if (setSearch) {
+      setSearch(searchValue);
+    }
+
+    if (navigate) {
+      navigate("Buy");
+    }
+  };
+
+  const goTo = (page) => {
+    if (navigate) navigate(page);
   };
 
   return (
-    <main className="relative isolate min-h-screen overflow-x-hidden bg-[#050505] text-white">
-
-      {/* FIXED VIDEO BACKGROUND - FULL PAGE */}
+    <main className="home-page relative isolate overflow-hidden bg-transparent text-white">
+      {/* VIDEO BACKGROUND */}
       <VideoBackground src={homeVideo} />
 
-      {/* ALL PAGE CONTENT */}
+      {/* HOMEPAGE CONTENT */}
       <div className="relative z-10">
+        <style>{`
+          .home-info-card {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.16);
+            background: linear-gradient(
+              135deg,
+              rgba(18,18,22,.94),
+              rgba(8,8,11,.90)
+            );
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition:
+              transform .35s ease,
+              border-color .35s ease,
+              background .35s ease;
+          }
 
-        {/* =====================================
-            HERO SECTION
-        ===================================== */}
+          .home-info-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            opacity: 0;
+            background: linear-gradient(
+              135deg,
+              rgba(225,29,72,.22),
+              transparent 65%
+            );
+            transition: opacity .35s ease;
+          }
 
-        <section className="hero relative isolate min-h-[680px] overflow-hidden border-b border-white/10 lg:min-h-[760px]">
+          .home-info-card:hover {
+            transform: translateY(-7px);
+            border-color: rgba(244,63,94,.65);
+            background: linear-gradient(
+              135deg,
+              rgba(35,12,19,.96),
+              rgba(12,12,16,.94)
+            );
+          }
 
-          {/* Red ambient lighting */}
-          <div className="pointer-events-none absolute -left-40 top-1/4 z-0 h-[450px] w-[450px] animate-pulse rounded-full bg-red-700/20 blur-[150px]" />
+          .home-info-card:hover::before {
+            opacity: 1;
+          }
 
-          <div className="pointer-events-none absolute right-[10%] top-[15%] z-0 h-[350px] w-[350px] animate-float rounded-full bg-red-600/10 blur-[130px]" />
+          .home-info-card:hover .home-card-icon {
+            transform: rotate(-8deg) scale(1.1);
+            background: rgba(225,29,72,.25);
+          }
 
-          {/* Hero content */}
-          <div className="relative z-10 mx-auto flex min-h-[680px] max-w-[1500px] items-center px-5 py-12 sm:px-10 lg:min-h-[760px] lg:px-16">
+          .home-card-icon {
+            transition: all .35s ease;
+          }
 
-            <div className="page-enter max-w-3xl">
+          .home-service-card {
+            background: rgba(12,12,16,.92);
+            border: 1px solid rgba(255,255,255,.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: transform .35s ease, border-color .35s ease;
+          }
 
-              {/* Brand badge */}
-              <div className="mb-8 inline-flex items-center gap-3 rounded-full border border-red-500/30 bg-black/50 px-5 py-3 shadow-[0_0_30px_rgba(229,9,47,0.12)] backdrop-blur-xl">
-                <span className="grid h-8 w-8 place-items-center rounded-full border border-red-500/50 bg-red-600/20 text-xs font-black text-red-400">
-                  CB
-                </span>
+          .home-service-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(244,63,94,.5);
+          }
 
-                <span className="text-xs font-black tracking-[3px] text-white">
-                  CARBYKE
-                </span>
+          .home-feature-card {
+            background: rgba(12,12,16,.92);
+            border: 1px solid rgba(255,255,255,.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+          }
 
-                <span className="h-1.5 w-1.5 rounded-full bg-red-500 shadow-[0_0_12px_#e5092f]" />
+          .home-image-card img {
+            transition: transform .7s ease;
+          }
 
-                <span className="text-[9px] font-bold tracking-[2px] text-red-300">
-                  PREMIUM MOBILITY
-                </span>
+          .home-image-card:hover img {
+            transform: scale(1.08);
+          }
+
+          .home-cta-panel {
+            background: rgba(12,12,16,.94);
+            border: 1px solid rgba(225,29,72,.35);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+          }
+
+          .home-cta-glow {
+            animation: homeGlow 4s ease-in-out infinite;
+          }
+
+          .home-cta-button {
+            position: relative;
+            overflow: hidden;
+          }
+
+          .home-cta-button::after {
+            content: "";
+            position: absolute;
+            top: -20%;
+            left: 0;
+            width: 35%;
+            height: 140%;
+            background: rgba(255,255,255,.25);
+            transform: translateX(-150%) skewX(-20deg);
+          }
+
+          .home-cta-button:hover::after {
+            animation: homeShine .7s ease;
+          }
+            @keyframes homeFloatZoom {
+  0%, 100% {
+    scale: 1;
+    translate: 0 0;
+  }
+
+  50% {
+    scale: 1.035;
+    translate: 0 -9px;
+  }
+}
+
+.home-floating-card {
+  animation: homeFloatZoom 4s ease-in-out infinite;
+  will-change: scale, translate;
+}
+
+          @keyframes homeReveal {
+            0% {
+              opacity: 0;
+              transform: translateY(28px);
+              filter: blur(8px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+              filter: blur(0);
+            }
+          }
+
+          @keyframes homeBubble {
+            0% { transform: scale(.94); }
+            55% { transform: scale(1.035); }
+            100% { transform: scale(1); }
+          }
+
+          @keyframes homeGradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+          }
+
+          @keyframes homeGlow {
+            0%, 100% { opacity: .35; }
+            50% { opacity: .75; }
+          }
+
+          @keyframes homeShine {
+            0% { transform: translateX(-150%) skewX(-20deg); }
+            100% { transform: translateX(250%) skewX(-20deg); }
+          }
+
+          .home-enter {
+            opacity: 0;
+            animation: homeReveal .85s cubic-bezier(.2,.7,.2,1) forwards;
+          }
+
+          .home-gradient-text {
+            display: inline-block;
+            background: linear-gradient(
+              100deg,
+              #ffffff 0%,
+              #ff718a 22%,
+              #ed1745 42%,
+              #c3b5ff 65%,
+              #ffffff 82%,
+              #ff496b 100%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: homeGradient 7s linear infinite;
+          }
+
+          .home-bubble-title {
+            animation:
+              homeReveal 1s ease-out both,
+              homeBubble 1.2s .3s ease-out both;
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .home-page *,
+            .home-page *::before,
+            .home-page *::after {
+              animation-duration: .01ms !important;
+              animation-iteration-count: 1 !important;
+              transition-duration: .01ms !important;
+            }
+          }
+        `}</style>
+
+        {/* HERO SECTION */}
+        <section className="relative px-5 pb-20 pt-20 sm:px-8 lg:px-14 lg:pb-28 lg:pt-28">
+          <div className="pointer-events-none absolute -left-40 top-10 h-96 w-96 rounded-full bg-red-600/10 blur-[130px]" />
+          <div className="pointer-events-none absolute right-0 top-20 h-80 w-80 rounded-full bg-rose-500/10 blur-[120px]" />
+
+          <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_.95fr]">
+            {/* LEFT CONTENT */}
+            <div>
+              <div
+                className="home-enter mb-7 inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-2 text-xs font-semibold tracking-[.18em] text-red-300"
+                style={{ animationDelay: "100ms" }}
+              >
+                <Sparkles size={14} />
+                YOUR MOBILITY. YOUR CHOICE.
               </div>
 
-              {/* Heading */}
-              <h1 className="text-5xl font-black leading-[1.04] tracking-tight sm:text-6xl lg:text-[86px]">
-                FIND YOUR
-                <br />
-                NEXT
-                <span className="text-gradient red-glow"> DRIVE.</span>
-                <br />
-                <span className="text-white/90">OWN THE ROAD.</span>
+              <h1 className="max-w-3xl text-5xl font-black leading-[1.08] tracking-tight sm:text-6xl lg:text-[76px]">
+                <span
+                  className="home-bubble-title block home-gradient-text"
+                  style={{ animationDelay: "180ms" }}
+                >
+                  FIND YOUR RIDE.
+                </span>
+
+                <span
+                  className="home-bubble-title mt-2 block text-white"
+                  style={{ animationDelay: "350ms" }}
+                >
+                  OWN THE <span className="home-gradient-text">ROAD.</span>
+                </span>
               </h1>
 
-              <p className="mt-8 max-w-xl text-sm leading-8 text-gray-300 sm:text-base">
-                Discover exceptional cars and bikes. Buy, sell or rent your next
-                ride with <span className="font-bold text-white">CARBYKE</span> —
-                one destination for every journey.
+              <p
+                className="home-enter mt-7 max-w-xl text-base leading-8 text-gray-300 sm:text-lg"
+                style={{ animationDelay: "500ms" }}
+              >
+                Buy, sell or rent your next vehicle with CARBYKE. Discover a
+                smarter way to explore the world of cars and bikes.
               </p>
 
-              {/* Search */}
+              {/* SEARCH */}
               <form
                 onSubmit={handleSearch}
-                className="glass-panel mt-10 flex max-w-2xl flex-col gap-2 rounded-2xl p-2 sm:flex-row"
+                className="home-enter mt-9 flex max-w-xl flex-col gap-3 rounded-2xl border border-white/15 bg-black/75 p-3 backdrop-blur-xl sm:flex-row"
+                style={{ animationDelay: "650ms" }}
               >
-                <div className="flex flex-1 items-center gap-3 px-4">
-                  <Search size={21} className="shrink-0 text-red-500" />
-
+                <div className="flex flex-1 items-center gap-3 px-3">
+                  <Search className="shrink-0 text-red-400" size={20} />
                   <input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search cars, bikes or brands..."
-                    className="w-full bg-transparent py-4 text-sm text-white outline-none placeholder:text-gray-500"
+                    type="text"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    placeholder="Search cars, bikes..."
+                    className="w-full bg-transparent py-3 text-sm text-white outline-none placeholder:text-gray-400"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="group flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-red-700 to-red-500 px-8 py-4 text-sm font-black shadow-lg shadow-red-900/30 transition duration-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(229,9,47,0.4)]"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-red-600 px-7 py-3 font-bold transition hover:bg-red-500"
                 >
-                  Search Vehicles
-                  <ArrowRight
-                    size={18}
-                    className="transition group-hover:translate-x-1"
-                  />
+                  Search <ArrowRight size={17} />
                 </button>
               </form>
 
-              {/* Main buttons */}
-              <div className="mt-7 flex flex-wrap gap-4">
-                <button
-                  onClick={() => navigate("Buy")}
-                  className="group flex items-center gap-3 rounded-xl bg-red-600 px-8 py-4 text-sm font-black text-white shadow-[0_8px_30px_rgba(229,9,47,0.2)] transition duration-300 hover:-translate-y-1 hover:bg-red-500 hover:shadow-[0_0_35px_rgba(229,9,47,0.4)]"
-                >
-                  Explore Vehicles
-                  <ArrowUpRight
-                    size={19}
-                    className="transition duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-                  />
-                </button>
-
-                <button
-                  onClick={() => navigate("Rent")}
-                  className="group flex items-center gap-3 rounded-xl border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-red-500 hover:bg-red-600/15"
-                >
-                  <KeyRound
-                    size={18}
-                    className="text-red-400 transition group-hover:rotate-12"
-                  />
-                  Rent a Vehicle
-                </button>
-              </div>
-
-              {/* Trust points */}
-              <div className="mt-12 flex flex-wrap gap-x-7 gap-y-4 text-xs text-gray-300">
-                {["Easy Experience", "Trusted Marketplace", "Cars & Bikes"].map(
-                  (item) => (
-                    <span key={item} className="flex items-center gap-2">
-                      <CheckCircle2 size={16} className="text-red-500" />
-                      {item}
-                    </span>
-                  ),
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom right label */}
-          <div className="absolute bottom-10 right-12 z-10 hidden items-center gap-4 lg:flex">
-            <span className="text-[10px] font-bold tracking-[4px] text-white/50">
-              DISCOVER THE DIFFERENCE
-            </span>
-            <span className="h-px w-16 bg-red-500" />
-          </div>
-
-          {/* Scroll indicator */}
-          <a
-            href="#carbyke-services"
-            className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-[9px] tracking-[3px] text-white/50 transition hover:text-red-400 sm:flex"
-          >
-            SCROLL TO EXPLORE
-            <ChevronDown size={18} className="animate-bounce" />
-          </a>
-        </section>
-
-        {/* =====================================
-            BUY SELL RENT
-        ===================================== */}
-
-        <section
-          id="carbyke-services"
-          className="relative mx-auto max-w-[1500px] px-5 py-24 sm:px-10 lg:px-16"
-        >
-          <div className="mb-14 text-center">
-            <p className="text-xs font-black tracking-[4px] text-red-500">
-              THE CARBYKE EXPERIENCE
-            </p>
-
-            <h2 className="mt-5 text-3xl font-black sm:text-5xl">
-              EVERYTHING YOU NEED,
-              <span className="text-gradient"> ONE PLACE.</span>
-            </h2>
-
-            <p className="mt-5 text-sm text-gray-400">
-              One destination. Multiple possibilities. Endless journeys.
-            </p>
-          </div>
-
-          <div className="grid gap-7 md:grid-cols-3">
-
-            {/* BUY */}
-            <button
-              onClick={() => navigate("Buy")}
-              className="group vehicle-card rounded-2xl p-8 text-left"
-            >
-              <div className="flex items-center justify-between">
-                <div className="grid h-16 w-16 place-items-center rounded-2xl border border-red-500/20 bg-red-500/10 text-red-500 transition duration-500 group-hover:rotate-[-8deg] group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white">
-                  <CarFront size={32} />
-                </div>
-
-                <span className="text-xs font-bold tracking-[3px] text-white/20">
-                  01
-                </span>
-              </div>
-
-              <h3 className="mt-9 text-2xl font-black">Buy Vehicles</h3>
-
-              <p className="mt-4 text-sm leading-7 text-gray-400">
-                Explore second-hand cars and bikes and discover a vehicle that
-                matches your style and budget.
-              </p>
-
-              <span className="mt-8 flex items-center gap-3 text-sm font-bold text-red-500">
-                Explore Vehicles
-                <ArrowRight
-                  size={18}
-                  className="transition group-hover:translate-x-2"
-                />
-              </span>
-            </button>
-
-            {/* SELL */}
-            <button
-              onClick={() => navigate("Sell")}
-              className="group vehicle-card rounded-2xl p-8 text-left"
-            >
-              <div className="flex items-center justify-between">
-                <div className="grid h-16 w-16 place-items-center rounded-2xl border border-red-500/20 bg-red-500/10 text-red-500 transition duration-500 group-hover:rotate-[8deg] group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white">
-                  <Bike size={32} />
-                </div>
-
-                <span className="text-xs font-bold tracking-[3px] text-white/20">
-                  02
-                </span>
-              </div>
-
-              <h3 className="mt-9 text-2xl font-black">Sell Vehicles</h3>
-
-              <p className="mt-4 text-sm leading-7 text-gray-400">
-                List your car or bike and connect with potential buyers through
-                the CARBYKE marketplace.
-              </p>
-
-              <span className="mt-8 flex items-center gap-3 text-sm font-bold text-red-500">
-                Sell Your Vehicle
-                <ArrowRight
-                  size={18}
-                  className="transition group-hover:translate-x-2"
-                />
-              </span>
-            </button>
-
-            {/* RENT */}
-            <button
-              onClick={() => navigate("Rent")}
-              className="group relative overflow-hidden rounded-2xl border border-red-500/40 bg-gradient-to-br from-[#3b0b15] via-[#1b0b10] to-[#101014] p-8 text-left shadow-[0_15px_50px_rgba(229,9,47,0.08)] transition duration-500 hover:-translate-y-3 hover:border-red-400 hover:shadow-[0_20px_60px_rgba(229,9,47,0.2)]"
-            >
-              <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-red-500/20 blur-[70px] transition duration-700 group-hover:scale-150" />
-
-              <div className="relative flex items-center justify-between">
-                <div className="grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-red-500 to-red-800 text-white shadow-lg shadow-red-900/40 transition duration-500 group-hover:rotate-[-8deg] group-hover:scale-110">
-                  <KeyRound size={32} />
-                </div>
-
-                <span className="text-xs font-bold tracking-[3px] text-white/30">
-                  03
-                </span>
-              </div>
-
-              <p className="relative mt-8 text-[10px] font-black tracking-[3px] text-red-300">
-                YOUR JOURNEY, YOUR WAY
-              </p>
-
-              <h3 className="relative mt-3 text-2xl font-black">
-                Rent Vehicles
-              </h3>
-
-              <p className="relative mt-4 text-sm leading-7 text-gray-300">
-                Find a vehicle for your next trip, daily commute or weekend
-                adventure.
-              </p>
-
-              <span className="relative mt-8 flex items-center gap-3 text-sm font-bold text-red-400">
-                Explore Rentals
-                <ArrowRight
-                  size={18}
-                  className="transition group-hover:translate-x-2"
-                />
-              </span>
-            </button>
-          </div>
-        </section>
-
-        {/* =====================================
-            FEATURED COLLECTION
-        ===================================== */}
-
-        <section className="relative overflow-hidden border-y border-white/5 bg-[#0c0c0f]/70 py-24">
-          <div className="absolute -right-40 top-0 h-[400px] w-[400px] rounded-full bg-red-800/10 blur-[130px]" />
-
-          <div className="relative mx-auto max-w-[1500px] px-5 sm:px-10 lg:px-16">
-            <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
-              <div>
-                <p className="flex items-center gap-3 text-xs font-black tracking-[4px] text-red-500">
-                  <Sparkles size={17} />
-                  THE COLLECTION
-                </p>
-
-                <h2 className="mt-5 text-3xl font-black sm:text-5xl">
-                  FIND YOUR
-                  <span className="text-gradient"> STYLE.</span>
-                </h2>
-
-                <p className="mt-5 text-sm text-gray-400">
-                  From luxury automobiles to powerful motorcycles.
-                </p>
-              </div>
-
-              <button
-                onClick={() => navigate("Buy")}
-                className="group flex items-center gap-3 text-sm font-bold text-red-500 transition hover:text-red-400"
+              {/* QUICK ACTIONS */}
+              <div
+                className="home-enter mt-6 flex flex-wrap gap-3"
+                style={{ animationDelay: "780ms" }}
               >
-                View All Vehicles
-                <MoveUpRight
-                  size={19}
-                  className="transition group-hover:translate-x-1 group-hover:-translate-y-1"
-                />
-              </button>
+                <button
+                  onClick={() => goTo("Buy")}
+                  className="flex items-center gap-2 rounded-full border border-white/20 bg-black/75 px-5 py-3 text-sm font-semibold text-gray-100 transition hover:border-red-500 hover:bg-red-500/10"
+                >
+                  <CarFront size={17} /> Buy Vehicle
+                </button>
+
+                <button
+                  onClick={() => goTo("Rent")}
+                  className="flex items-center gap-2 rounded-full border border-red-500/50 bg-red-600/20 px-5 py-3 text-sm font-semibold text-red-200 transition hover:bg-red-600 hover:text-white"
+                >
+                  <KeyRound size={17} /> Rent a Vehicle
+                </button>
+              </div>
+
+              <div
+                className="home-enter mt-8 flex flex-wrap gap-x-6 gap-y-3 text-xs text-gray-300"
+                style={{ animationDelay: "900ms" }}
+              >
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 size={15} className="text-red-400" />
+                  Cars & Bikes
+                </span>
+
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 size={15} className="text-red-400" />
+                  Buy, Sell & Rent
+                </span>
+
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 size={15} className="text-red-400" />
+                  One Platform
+                </span>
+              </div>
             </div>
 
-            <div className="mt-14 grid gap-7 md:grid-cols-3">
-              {categories.map((item) => (
-                <button
-                  key={item.title}
-                  onClick={() => navigate("Buy")}
-                  className="group vehicle-card text-left"
-                >
-                  <div className="relative h-[260px] overflow-hidden sm:h-[310px]">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition duration-1000 group-hover:scale-110 group-hover:saturate-125"
+            {/* RIGHT SIDE: FOUR FEATURE CARDS */}
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              {heroCards.map((card, index) => {
+                const Icon = card.icon;
+
+                return (
+                  <div
+                    key={card.number}
+                    className="home-info-card home-enter home-floating-card group min-h-[190px] rounded-2xl p-4 sm:min-h-[220px] sm:p-6"
+                    style={{ animationDelay: `${350 + index * 150}ms` }}
+                  >
+                    <div
+                      className={`absolute inset-0 -z-10 bg-gradient-to-br ${card.color} opacity-70`}
                     />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" />
+                    <div className="mb-5 flex items-center justify-between">
+                      <div className="home-card-icon flex h-11 w-11 items-center justify-center rounded-xl border border-red-400/20 bg-red-500/10 text-red-400">
+                        <Icon size={21} />
+                      </div>
 
-                    <span className="absolute left-5 top-5 rounded-full border border-white/20 bg-black/40 px-4 py-2 text-[10px] font-bold tracking-[2px] text-white backdrop-blur-md">
-                      CARBYKE COLLECTION
-                    </span>
-
-                    <span className="absolute bottom-5 left-6 text-5xl font-black text-white/20">
-                      {item.number}
-                    </span>
-
-                    <div className="absolute bottom-5 right-5 grid h-12 w-12 place-items-center rounded-full border border-white/30 bg-black/30 text-white backdrop-blur-md transition duration-300 group-hover:rotate-45 group-hover:border-red-500 group-hover:bg-red-600">
-                      <ArrowUpRight size={21} />
+                      <span className="text-xs font-bold tracking-widest text-gray-400">
+                        {card.number}
+                      </span>
                     </div>
-                  </div>
 
-                  <div className="p-7">
-                    <h3 className="text-xl font-black">{item.title}</h3>
-                    <p className="mt-2 text-sm text-gray-400">
-                      {item.subtitle}
+                    <h3 className="text-base font-bold text-white sm:text-lg">
+                      {card.title}
+                    </h3>
+
+                    <p className="mt-2 text-xs leading-6 text-gray-300 sm:text-sm">
+                      {card.description}
                     </p>
+
+                    <div className="mt-4 h-[2px] w-9 rounded-full bg-red-500 transition-all duration-300 group-hover:w-16" />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* BUY SELL RENT SECTION */}
+        <section className="px-5 py-16 sm:px-8 lg:px-14">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div>
+                <p className="mb-3 text-xs font-bold tracking-[.25em] text-red-400">
+                  WHAT YOU CAN DO
+                </p>
+
+                <h2 className="text-3xl font-black sm:text-5xl">
+                  YOUR RIDE,{" "}
+                  <span className="home-gradient-text">YOUR WAY.</span>
+                </h2>
+              </div>
+
+              <p className="max-w-md text-sm leading-7 text-gray-300">
+                Everything you need to make your next vehicle decision, all in
+                one place.
+              </p>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-3">
+              {services.map((service, index) => {
+                const Icon = service.icon;
+
+                return (
+                  <div
+                    key={service.number}
+                    className="home-service-card home-enter rounded-3xl p-7"
+                    style={{
+                      animationDelay: `${index * 0.7}s`,
+                    }}
+                  >
+                    <div className="mb-7 flex items-center justify-between">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-500/15 text-red-400">
+                        <Icon size={26} />
+                      </div>
+
+                      <span className="text-sm font-bold tracking-widest text-gray-400">
+                        {service.number}
+                      </span>
+                    </div>
+
+                    <h3 className="text-2xl font-bold">{service.title}</h3>
+
+                    <p className="mt-4 min-h-[72px] text-sm leading-7 text-gray-300">
+                      {service.description}
+                    </p>
+
+                    <button
+                      onClick={() => goTo(service.page)}
+                      className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-red-400 transition hover:gap-4 hover:text-red-300"
+                    >
+                      {service.action} <ArrowUpRight size={17} />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* FEATURED COLLECTION */}
+        <section className="px-5 py-16 sm:px-8 lg:px-14">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-10">
+              <p className="mb-3 text-xs font-bold tracking-[.25em] text-red-400">
+                EXPLORE THE COLLECTION
+              </p>
+
+              <h2 className="text-3xl font-black sm:text-5xl">
+                FIND YOUR <span className="home-gradient-text">MACHINE.</span>
+              </h2>
+
+              <p className="mt-4 max-w-xl text-sm leading-7 text-gray-300">
+                From everyday rides to extraordinary machines, discover what
+                moves you.
+              </p>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-3">
+              {categories.map((category, index) => (
+                <button
+                  key={category.title}
+                  onClick={() => goTo("Buy")}
+                  className="home-image-card home-enter group relative h-[320px] overflow-hidden rounded-3xl border border-white/10 text-left"
+                  style={{ animationDelay: `${index * 140}ms` }}
+                >
+                  <img
+                    src={category.image}
+                    alt={category.title}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    loading="lazy"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
+
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <span className="text-xs font-bold uppercase tracking-widest text-red-300">
+                      {category.type}
+                    </span>
+
+                    <div className="mt-2 flex items-end justify-between">
+                      <div>
+                        <h3 className="text-2xl font-black">
+                          {category.title}
+                        </h3>
+
+                        <p className="mt-1 text-sm text-gray-200">
+                          {category.subtitle}
+                        </p>
+                      </div>
+
+                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-red-600 text-white transition group-hover:scale-110">
+                        <MoveUpRight size={19} />
+                      </span>
+                    </div>
                   </div>
                 </button>
               ))}
@@ -425,51 +631,41 @@ function HomePage({ navigate, setSearch }) {
           </div>
         </section>
 
-        {/* =====================================
-            WHY CARBYKE
-        ===================================== */}
-
-        <section className="relative overflow-hidden px-5 py-24 sm:px-10 lg:px-16">
-          <div className="absolute -left-40 top-20 h-[450px] w-[450px] rounded-full bg-red-900/10 blur-[150px]" />
-
-          <div className="relative mx-auto max-w-[1500px]">
-            <div className="text-center">
-              <p className="text-xs font-black tracking-[4px] text-red-500">
-                BUILT AROUND YOUR JOURNEY
+        {/* WHY CARBYKE */}
+        <section className="px-5 py-20 sm:px-8 lg:px-14">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-12 text-center">
+              <p className="mb-3 text-xs font-bold tracking-[.25em] text-red-400">
+                THE CARBYKE DIFFERENCE
               </p>
 
-              <h2 className="mt-5 text-3xl font-black sm:text-5xl">
-                MORE THAN JUST
-                <span className="text-gradient"> A RIDE.</span>
+              <h2 className="text-3xl font-black sm:text-5xl">
+                WHY <span className="home-gradient-text">CARBYKE?</span>
               </h2>
 
-              <p className="mx-auto mt-5 max-w-xl text-sm leading-8 text-gray-400">
-                Buying, selling and renting — everything comes together in one
-                vehicle marketplace.
+              <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-gray-300">
+                A better way to discover, buy, sell and rent vehicles.
               </p>
             </div>
 
-            <div className="mt-20 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-              {features.map((item, index) => {
-                const Icon = item.icon;
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
 
                 return (
                   <div
-                    key={item.title}
-                    className="group text-center transition duration-500 hover:-translate-y-3"
+                    key={feature.title}
+                    className="home-feature-card home-enter rounded-2xl p-6 transition duration-300 hover:-translate-y-2 hover:border-red-500/40"
+                    style={{ animationDelay: `${index * 130}ms` }}
                   >
-                    <div className="mx-auto grid h-20 w-20 place-items-center rounded-2xl border border-red-500/20 bg-gradient-to-br from-red-500/15 to-transparent text-red-500 shadow-[0_10px_40px_rgba(229,9,47,0.06)] transition duration-500 group-hover:rotate-[-8deg] group-hover:scale-110 group-hover:border-red-500 group-hover:bg-red-600 group-hover:text-white group-hover:shadow-[0_0_35px_rgba(229,9,47,0.3)]">
-                      <Icon size={32} />
+                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-red-500/15 text-red-400">
+                      <Icon size={23} />
                     </div>
 
-                    <p className="mt-6 text-[10px] font-black tracking-[3px] text-red-500/60">
-                      0{index + 1}
-                    </p>
+                    <h3 className="text-lg font-bold">{feature.title}</h3>
 
-                    <h3 className="mt-3 text-lg font-black">{item.title}</h3>
-
-                    <p className="mx-auto mt-3 max-w-xs text-sm leading-7 text-gray-400">
-                      {item.text}
+                    <p className="mt-3 text-sm leading-7 text-gray-300">
+                      {feature.description}
                     </p>
                   </div>
                 );
@@ -478,58 +674,57 @@ function HomePage({ navigate, setSearch }) {
           </div>
         </section>
 
-        {/* =====================================
-            FINAL CALL TO ACTION
-        ===================================== */}
+        {/* CTA SECTION */}
+        <section className="px-5 pb-20 pt-10 sm:px-8 lg:px-14">
+          <div className="home-cta-panel relative mx-auto max-w-6xl overflow-hidden rounded-[28px] px-6 py-10 text-center sm:px-12 sm:py-12">
+            <div className="home-cta-glow pointer-events-none absolute -right-20 -top-32 h-72 w-72 rounded-full bg-red-600/20 blur-[90px]" />
 
-        <section className="px-5 pb-28 sm:px-10 lg:px-16">
-          <div className="glass-panel relative mx-auto max-w-[1350px] overflow-hidden rounded-[30px] border-red-500/30 bg-gradient-to-r from-[#350813] via-[#1a0a10] to-[#090909] px-6 py-20 text-center sm:px-14 sm:py-24">
-            <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-red-600/20 blur-[110px]" />
-
-            <div className="absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-red-600/15 blur-[110px]" />
+            <div className="pointer-events-none absolute -bottom-32 -left-20 h-64 w-64 rounded-full bg-rose-600/10 blur-[90px]" />
 
             <div className="relative">
-              <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl border border-red-500/40 bg-red-500/10 text-xl font-black text-red-400 shadow-[0_0_30px_rgba(229,9,47,0.2)]">
-                CB
+              <div className="home-enter mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-red-500/30 bg-red-500/10 text-red-400">
+                <Sparkles size={21} />
               </div>
 
-              <p className="mt-7 text-xs font-black tracking-[5px] text-red-400">
-                THIS IS YOUR MOMENT
+              <p className="home-enter text-xs font-bold tracking-[.25em] text-red-300">
+                YOUR JOURNEY STARTS HERE
               </p>
 
-              <h2 className="mx-auto mt-6 max-w-4xl text-3xl font-black leading-tight sm:text-6xl">
+              <h2
+                className="home-enter mt-4 text-3xl font-black leading-tight sm:text-5xl"
+                style={{ animationDelay: "150ms" }}
+              >
                 THE ROAD IS YOURS.
-                <span className="mt-3 block text-gradient">
-                  MAKE IT COUNT.
-                </span>
+                <br />
+                <span className="home-gradient-text">MAKE IT COUNT.</span>
               </h2>
 
-              <p className="mx-auto mt-7 max-w-xl text-sm leading-8 text-gray-300">
+              <p
+                className="home-enter mx-auto mt-4 max-w-xl text-sm leading-7 text-gray-200 sm:text-base"
+                style={{ animationDelay: "300ms" }}
+              >
                 Explore cars and bikes, list your vehicle or discover rental
                 options with CARBYKE.
               </p>
 
               <button
-                onClick={() => navigate("Buy")}
-                className="group mt-10 inline-flex items-center gap-4 rounded-xl bg-gradient-to-r from-red-700 to-red-500 px-10 py-5 text-sm font-black text-white shadow-[0_10px_40px_rgba(229,9,47,0.2)] transition duration-500 hover:-translate-y-2 hover:shadow-[0_15px_50px_rgba(229,9,47,0.4)]"
+                onClick={() => goTo("Buy")}
+                className="home-cta-button home-enter mt-7 inline-flex items-center gap-3 rounded-full bg-red-600 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-red-950/40 transition hover:-translate-y-1 hover:bg-red-500"
+                style={{ animationDelay: "450ms" }}
               >
-                Explore CARBYKE
-                <ArrowRight
-                  size={20}
-                  className="transition group-hover:translate-x-2"
-                />
+                Explore CARBYKE <ArrowRight size={18} />
               </button>
 
-              <p className="mt-9 text-[10px] font-bold tracking-[4px] text-white/30">
-                CARBYKE — DRIVE YOUR NEXT MOVE.
+              <p
+                className="home-enter mt-6 text-[10px] font-semibold tracking-[.22em] text-gray-300 sm:text-xs"
+                style={{ animationDelay: "550ms" }}
+              >
+                CARBYKE — YOUR MOBILITY, YOUR CHOICE.
               </p>
             </div>
           </div>
         </section>
-
       </div>
     </main>
   );
 }
-
-export default HomePage;

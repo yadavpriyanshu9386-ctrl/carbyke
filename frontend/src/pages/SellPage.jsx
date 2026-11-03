@@ -209,7 +209,7 @@ function SellPage({ sellType, setSellType, submitted, setSubmitted }) {
             </div>
 
             {/* FOUR CARDS ON HERO RIGHT SIDE */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="sell-cards-stage grid grid-cols-1 gap-4 sm:grid-cols-2">
               {/* QUICK TIPS */}
               <div className="sell-card group relative overflow-hidden rounded-2xl border border-white/10 bg-[#090909]/75 p-5 backdrop-blur-2xl transition-all duration-500 hover:-translate-y-1 hover:border-red-500/40 hover:shadow-[0_15px_45px_rgba(220,38,38,0.10)]">
                 <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-red-600/10 blur-[65px]" />
@@ -857,35 +857,76 @@ function SellPage({ sellType, setSellType, submitted, setSubmitted }) {
         </section>
 
         {/* BOTTOM CTA */}
-        <section className="px-4 pb-12 sm:px-6 lg:px-10">
-          <div className="relative mx-auto max-w-[1450px] overflow-hidden rounded-3xl border border-red-500/20 bg-gradient-to-r from-red-950/70 via-black/90 to-red-950/50 px-6 py-10 text-center backdrop-blur-xl sm:px-12">
-            <div className="pointer-events-none absolute left-1/2 top-0 h-40 w-96 -translate-x-1/2 rounded-full bg-red-600/20 blur-[80px]" />
+        <section className="px-4 pb-10 pt-4 sm:px-6 lg:px-10">
+          <div className="relative mx-auto max-w-[1000px] overflow-hidden rounded-3xl border border-red-500/20 bg-gradient-to-r from-[#19070b] via-[#10090c] to-[#19070b] px-6 py-8 shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:px-10 sm:py-9">
+            <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-red-600/15 blur-[90px]" />
+            <div className="pointer-events-none absolute -bottom-24 -left-16 h-56 w-56 rounded-full bg-red-600/10 blur-[80px]" />
 
-            <div className="relative sell-copy">
-              <p className="text-xs font-bold uppercase tracking-[3px] text-red-400">
-                CARBYKE Marketplace
-              </p>
+            <div className="relative grid items-center gap-8 lg:grid-cols-[1.3fr_.7fr]">
+              {/* LEFT CONTENT */}
+              <div className="sell-copy">
+                <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[3px] text-red-400 sm:text-xs">
+                  <Sparkles size={15} />
+                  CARBYKE Marketplace
+                </p>
 
-              <div className="animated-heading-wrap">
-                <div className="sell-copy">
-                  <h2 className="premium-heading mt-6 text-4xl font-black leading-[1.05] tracking-tight sm:text-1xl lg:text-4xl">
-                    Your Vehicle. Your Price. Your Deal.
-                  </h2>
+                <h2 className="premium-heading mt-3 text-3xl font-black leading-tight sm:text-4xl">
+                  Your Vehicle. Your Price.
+                  <br className="hidden sm:block" /> Your Deal.
+                </h2>
+
+                <p className="mt-3 max-w-xl text-sm leading-6 text-slate-400">
+                  Ready to sell your car or bike? Showcase your vehicle, connect
+                  with potential buyers and take the next step towards your
+                  deal.
+                </p>
+
+                <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
+                  {[
+                    "Easy Listing",
+                    "Buyer Connections",
+                    "You Set the Price",
+                  ].map((item) => (
+                    <span
+                      key={item}
+                      className="flex items-center gap-2 text-xs font-medium text-slate-300 transition-colors duration-300 hover:text-white"
+                    >
+                      <CheckCircle2 size={15} className="text-red-400" />
+                      {item}
+                    </span>
+                  ))}
                 </div>
               </div>
 
-              <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-slate-400">
-                Create your listing and take the first step towards finding the
-                right buyer.
-              </p>
+              {/* RIGHT CTA */}
+              <div className="sell-copy flex flex-col items-start gap-4 lg:items-end">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl">
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-11 w-11 place-items-center rounded-xl border border-red-500/20 bg-red-500/10 text-red-400">
+                      <CarFront size={23} />
+                    </span>
+                    <div>
+                      <p className="text-sm font-bold text-white">
+                        Your next deal starts here.
+                      </p>
+                      <p className="mt-1 text-xs text-slate-400">
+                        List your vehicle on CARBYKE
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
-              <a
-                href="#sell-form"
-                className="mt-7 inline-flex items-center gap-3 rounded-xl bg-red-600 px-7 py-4 text-sm font-extrabold transition-all duration-300 hover:-translate-y-1 hover:bg-red-500 hover:shadow-[0_10px_35px_rgba(220,38,38,0.3)]"
-              >
-                Sell Your Vehicle
-                <ArrowRight size={17} />
-              </a>
+                <a
+                  href="#sell-form"
+                  className="group inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-red-600 to-red-500 px-7 py-4 text-sm font-extrabold text-white shadow-[0_10px_30px_rgba(220,38,38,0.25)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(220,38,38,0.4)]"
+                >
+                  Sell Your Vehicle
+                  <ArrowRight
+                    size={17}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -893,11 +934,12 @@ function SellPage({ sellType, setSellType, submitted, setSubmitted }) {
 
       {/* ANIMATIONS */}
       <style>{`
+ 
   @keyframes premiumReveal {
     0% {
       opacity: 0;
-      transform: translateY(25px);
-      filter: blur(8px);
+      transform: translateY(24px);
+      filter: blur(7px);
     }
     100% {
       opacity: 1;
@@ -912,22 +954,132 @@ function SellPage({ sellType, setSellType, submitted, setSubmitted }) {
     100% { background-position: 0% 50%; }
   }
 
+  @keyframes sellCardSpread {
+    0% {
+      opacity: 0;
+      transform: translate(var(--stack-x), var(--stack-y))
+        scale(.82) rotate(var(--stack-rotate));
+      filter: blur(5px);
+    }
+    65% {
+      opacity: 1;
+      filter: blur(0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(0, 0) scale(1) rotate(0);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  /* HERO TEXT REVEAL */
   .sell-copy {
-    animation: premiumReveal 1s cubic-bezier(.16,1,.3,1) both;
+    opacity: 0;
+    animation: premiumReveal 1.1s cubic-bezier(.16,1,.3,1) both;
+    animation-delay: var(--sell-delay, .12s);
   }
 
+  .sell-enter > :nth-child(1) {
+    --sell-delay: .12s;
+  }
+
+  .sell-enter > :nth-child(2) .sell-copy {
+    --sell-delay: .28s;
+  }
+
+  .sell-enter > :nth-child(3) {
+    --sell-delay: .43s;
+  }
+
+  .sell-enter > :nth-child(4) {
+    --sell-delay: .58s;
+  }
+
+  .sell-enter > :nth-child(5) {
+    --sell-delay: .72s;
+  }
+
+  /* FOUR CARDS START TOGETHER AND SPREAD OUT */
+  .sell-cards-stage {
+    perspective: 1200px;
+  }
+
+  .sell-cards-stage > .sell-card {
+    --stack-x: 0px;
+    --stack-y: 25px;
+    --stack-rotate: 0deg;
+
+    opacity: 0;
+    transform-origin: center;
+    animation: sellCardSpread 1.15s cubic-bezier(.16,1,.3,1) both;
+    animation-delay: var(--card-delay, .2s);
+    will-change: transform, opacity;
+  }
+
+  .sell-cards-stage > .sell-card:nth-child(1) {
+    --stack-x: 48%;
+    --stack-y: 45%;
+    --stack-rotate: -5deg;
+    --card-delay: .2s;
+  }
+
+  .sell-cards-stage > .sell-card:nth-child(2) {
+    --stack-x: -48%;
+    --stack-y: 45%;
+    --stack-rotate: 5deg;
+    --card-delay: .32s;
+  }
+
+  .sell-cards-stage > .sell-card:nth-child(3) {
+    --stack-x: 48%;
+    --stack-y: -45%;
+    --stack-rotate: 4deg;
+    --card-delay: .44s;
+  }
+
+  .sell-cards-stage > .sell-card:nth-child(4) {
+    --stack-x: -48%;
+    --stack-y: -45%;
+    --stack-rotate: -4deg;
+    --card-delay: .56s;
+  }
+
+  /* CARD HOVER */
   .sell-card {
-    animation: premiumReveal .9s cubic-bezier(.16,1,.3,1) both;
+    backface-visibility: hidden;
+    transition:
+      transform .55s cubic-bezier(.2,.8,.2,1),
+      border-color .4s ease,
+      box-shadow .5s ease,
+      background .4s ease;
   }
 
-  .animate-gradient {
-    background-size: 300% 300% !important;
-    animation: premiumGradient 5s ease infinite !important;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .sell-card:hover {
+    transform: translateY(-7px) scale(1.012);
+    border-color: rgba(239, 68, 68, .5);
+    box-shadow:
+      0 20px 45px rgba(0,0,0,.35),
+      0 0 28px rgba(220,38,38,.13);
   }
 
+  .sell-card .group-hover\:rotate-6 {
+    transition: transform .5s cubic-bezier(.2,.8,.2,1);
+  }
+
+  /* HEADING */
   .premium-heading {
     background: linear-gradient(
       100deg,
@@ -941,11 +1093,22 @@ function SellPage({ sellType, setSellType, submitted, setSubmitted }) {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: premiumGradient 6s ease infinite;
+    animation: premiumGradient 7s ease infinite;
+  }
+
+  .animate-gradient {
+    background-size: 300% 300% !important;
+    animation: premiumGradient 5s ease infinite !important;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .premium-text {
-    transition: color .35s ease, transform .35s ease, text-shadow .35s ease;
+    transition:
+      color .35s ease,
+      transform .35s ease,
+      text-shadow .35s ease;
   }
 
   .premium-text:hover {
@@ -954,11 +1117,49 @@ function SellPage({ sellType, setSellType, submitted, setSubmitted }) {
     text-shadow: 0 0 15px rgba(248,113,113,.35);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .sell-copy, .sell-card, .animate-gradient, .premium-heading {
-      animation: none !important;
+  /* FORM STEP TRANSITIONS */
+  #sell-form form {
+    transition: border-color .4s ease, box-shadow .4s ease;
+  }
+
+  #sell-form .field {
+    transition:
+      border-color .35s ease,
+      box-shadow .35s ease,
+      background .35s ease,
+      transform .35s ease;
+  }
+
+  #sell-form .field:focus {
+    transform: translateY(-1px);
+  }
+
+  /* MOBILE */
+  @media (max-width: 639px) {
+    .sell-cards-stage > .sell-card {
+      --stack-x: 0px !important;
+      --stack-y: 22px !important;
+      --stack-rotate: 0deg !important;
     }
   }
+
+  /* REDUCED MOTION ACCESSIBILITY */
+  @media (prefers-reduced-motion: reduce) {
+    .sell-copy,
+    .sell-card,
+    .premium-heading,
+    .animate-gradient {
+      animation: none !important;
+      opacity: 1 !important;
+      filter: none !important;
+      transform: none !important;
+    }
+
+    .sell-card {
+      transition: none !important;
+    }
+  }
+
 `}</style>
     </main>
   );

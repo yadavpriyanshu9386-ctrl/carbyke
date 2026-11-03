@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   Bike,
   CarFront,
@@ -45,12 +47,25 @@ function BuyPage({
   setToast,
   navigate,
 }) {
+  const [selectedLocation, setSelectedLocation] = useState("Delhi NCR");
+  const [locationOpen, setLocationOpen] = useState(false);
+
+  const locations = [
+    "Delhi NCR",
+    "Gurugram",
+    "Noida",
+    "Faridabad",
+    "New Delhi",
+    "All Locations",
+  ];
+
   const resetFilters = () => {
     setBrand("All brands");
     setFuel("All fuels");
     setMaxPrice(15000000);
     setSearch("");
     setType("All");
+    setSort("Latest First");
   };
 
   return (
@@ -70,8 +85,14 @@ function BuyPage({
           }
 
           @keyframes buyReveal {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
           }
 
           @keyframes textGradient {
@@ -104,16 +125,53 @@ function BuyPage({
             }
           }
 
+          @keyframes carbykeFloat {
+            0%, 100% {
+              transform: translateY(0);
+            }
+            50% {
+              transform: translateY(-12px);
+            }
+          }
+
+          @keyframes carbykeCardReveal {
+            from {
+              opacity: 0;
+              transform: translateX(45px) translateY(15px);
+              filter: blur(7px);
+            }
+            to {
+              opacity: 1;
+              transform: translateX(0) translateY(0);
+              filter: blur(0);
+            }
+          }
+
+          @keyframes locationReveal {
+            from {
+              opacity: 0;
+              transform: translateY(12px) scale(.97);
+              filter: blur(4px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+              filter: blur(0);
+            }
+          }
+
           .buy-glow {
             animation: buyGlow 5s ease-in-out infinite;
           }
 
           .buy-reveal {
-            animation: buyReveal .65s ease both;
+            animation: buyReveal .8s ease both;
           }
 
           .animated-badge {
-            animation: textUp .8s ease both, badgeGlow 4s ease-in-out infinite;
+            animation:
+              textUp .8s ease both,
+              badgeGlow 4s ease-in-out infinite;
           }
 
           .animated-heading-wrap {
@@ -194,7 +252,7 @@ function BuyPage({
           }
 
           .buy-filter-panel {
-            animation: buyReveal .35s ease both;
+            animation: buyReveal .4s ease both;
           }
 
           .buy-type-btn {
@@ -203,6 +261,86 @@ function BuyPage({
 
           .buy-type-btn:hover {
             transform: translateY(-3px);
+          }
+
+          .carbyke-info-card {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            border: 1px solid rgba(229,9,47,.38);
+            background:
+              radial-gradient(
+                circle at top right,
+                rgba(229,9,47,.35),
+                transparent 55%
+              ),
+              linear-gradient(
+                145deg,
+                rgba(12,12,16,.98),
+                rgba(75,10,25,.94)
+              );
+            box-shadow: 0 20px 65px rgba(0,0,0,.5);
+            opacity: 0;
+            animation:
+              carbykeCardReveal 1.2s cubic-bezier(.22,1,.36,1) .7s forwards,
+              carbykeFloat 6s ease-in-out 2s infinite;
+            transition:
+              border-color .5s ease,
+              box-shadow .5s ease;
+          }
+
+          .carbyke-info-card:hover {
+            border-color: rgba(255,80,110,.85);
+            box-shadow: 0 25px 70px rgba(180,10,45,.2);
+          }
+
+          .carbyke-info-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(
+              120deg,
+              transparent 20%,
+              rgba(255,255,255,.045) 50%,
+              transparent 80%
+            );
+            transform: translateX(-100%);
+            transition: transform 1s ease;
+          }
+
+          .carbyke-info-card:hover::before {
+            transform: translateX(100%);
+          }
+
+          .carbyke-info-text {
+            opacity: 0;
+            animation: textUp .9s ease forwards;
+          }
+
+          .carbyke-info-text:nth-child(1) { animation-delay: 1s; }
+          .carbyke-info-text:nth-child(2) { animation-delay: 1.2s; }
+          .carbyke-info-text:nth-child(3) { animation-delay: 1.4s; }
+          .carbyke-info-text:nth-child(4) { animation-delay: 1.6s; }
+
+          .location-dropdown {
+            transform-origin: top center;
+            animation: locationReveal .4s cubic-bezier(.22,1,.36,1) both;
+          }
+
+          .location-option {
+            transition:
+              background .3s ease,
+              color .3s ease,
+              transform .3s ease;
+          }
+
+          .location-option:hover {
+            transform: translateX(4px);
+          }
+
+          .buy-toolbar {
+            animation: buyReveal .6s ease both;
           }
 
           @media (prefers-reduced-motion: reduce) {
@@ -214,85 +352,187 @@ function BuyPage({
             .animated-ride,
             .animated-subtitle,
             .animated-points,
-            .animated-types {
+            .animated-types,
+            .carbyke-info-card,
+            .carbyke-info-text,
+            .location-dropdown,
+            .buy-toolbar {
               animation: none !important;
+              opacity: 1;
+              filter: none;
+            }
+
+            .carbyke-info-card,
+            .buy-type-btn,
+            .location-option {
+              transition: none !important;
             }
           }
         `}</style>
 
         {/* HERO SECTION */}
-        <section className="relative isolate min-h-[570px] overflow-hidden border-b border-white/10 bg-transparent sm:min-h-[600px]">
+        <section className="relative isolate overflow-visible border-b border-white/10 bg-transparent">
           <div className="pointer-events-none absolute inset-0 -z-10" />
 
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-[#08080b]/90 via-[#08080b]/65 to-[#08080b]/20" />
+          <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-[#08080b]/95 via-[#08080b]/75 to-[#08080b]/35" />
 
           <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-[#08080b]/90 via-transparent to-black/25" />
 
           <div className="buy-glow pointer-events-none absolute -right-20 top-10 -z-10 h-72 w-72 rounded-full bg-red-700/25 blur-[110px]" />
 
-          {/* HERO CONTENT */}
-          <div className="mx-auto flex min-h-[570px] max-w-[1500px] flex-col justify-center px-4 py-12 sm:min-h-[600px] sm:px-6 lg:px-8">
-            <div className="relative z-10 max-w-2xl">
-              <span className="animated-badge inline-flex items-center gap-2 rounded-full border border-red-500/40 bg-black/50 px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.2em] text-red-400 backdrop-blur-md">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
-                CARBYKE Marketplace
-              </span>
+          <div className="mx-auto max-w-[1500px] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+            <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_.9fr]">
+              {/* LEFT HERO CONTENT */}
+              <div className="relative z-10">
+                <span className="animated-badge inline-flex items-center gap-2 rounded-full border border-red-500/40 bg-black/50 px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.2em] text-red-400 backdrop-blur-md">
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
+                  CARBYKE Marketplace
+                </span>
 
-              <div className="animated-heading-wrap">
-                <h1 className="animated-heading mt-6 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-7xl">
-                  FIND YOUR
-                  <br />
-                  NEXT <span className="animated-ride">RIDE.</span>
-                </h1>
+                <div className="animated-heading-wrap">
+                  <h1 className="animated-heading mt-6 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-7xl">
+                    FIND YOUR
+                    <br />
+                    NEXT <span className="animated-ride">RIDE.</span>
+                  </h1>
+                </div>
+
+                <p className="animated-subtitle mt-5 max-w-lg text-sm leading-7 text-gray-300 sm:text-base">
+                  Explore premium pre-owned cars and bikes. Discover your next
+                  ride at the right price with CARBYKE.
+                </p>
+
+                <div className="animated-points mt-5 flex flex-wrap gap-3 text-xs text-gray-300">
+                  <span>✓ Quality Listings</span>
+                  <span className="text-red-500">•</span>
+                  <span>✓ Trusted Sellers</span>
+                  <span className="text-red-500">•</span>
+                  <span>✓ Better Deals</span>
+                </div>
+
+                {/* VEHICLE TYPE BUTTONS */}
+                <div className="animated-types mt-8 flex flex-wrap gap-3">
+                  {[
+                    { name: "All", icon: LayoutGrid },
+                    { name: "Car", icon: CarFront },
+                    { name: "Bike", icon: Bike },
+                  ].map((item) => {
+                    const Icon = item.icon;
+                    const active = type === item.name;
+
+                    return (
+                      <button
+                        key={item.name}
+                        onClick={() => setType(item.name)}
+                        className={`buy-type-btn flex items-center gap-2 rounded-xl border px-5 py-3 text-sm font-bold backdrop-blur-md ${
+                          active
+                            ? "border-red-500 bg-red-600/25 text-red-300 shadow-[0_0_22px_rgba(229,9,47,.2)]"
+                            : "border-white/20 bg-black/40 text-gray-200 hover:border-red-500/60 hover:text-white"
+                        }`}
+                      >
+                        <Icon size={19} />
+                        {item.name === "All"
+                          ? "All Vehicles"
+                          : item.name === "Car"
+                            ? "Cars"
+                            : "Bikes"}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
-              <p className="animated-subtitle mt-5 max-w-lg text-sm leading-7 text-gray-300 sm:text-base">
-                Explore premium pre-owned cars and bikes. Discover your next
-                ride at the right price with CARBYKE.
-              </p>
+              {/* RIGHT CARBYKE FLOATING CARD */}
+              <div className="relative mx-auto w-full max-w-[470px] lg:ml-auto">
+                <div className="pointer-events-none absolute -inset-8 rounded-full bg-red-700/15 blur-[75px]" />
 
-              <div className="animated-points mt-5 flex flex-wrap gap-3 text-xs text-gray-300">
-                <span>✓ Quality Listings</span>
-                <span className="text-red-500">•</span>
-                <span>✓ Trusted Sellers</span>
-                <span className="text-red-500">•</span>
-                <span>✓ Better Deals</span>
-              </div>
+                <div className="carbyke-info-card rounded-[28px] p-7 sm:p-9">
+                  <div className="carbyke-info-text flex items-center justify-between">
+                    <span className="rounded-full border border-red-400/30 bg-red-500/10 px-4 py-2 text-[10px] font-extrabold uppercase tracking-[.2em] text-red-300">
+                      Welcome to CARBYKE
+                    </span>
 
-              <div className="animated-types mt-8 flex flex-wrap gap-3">
-                {[
-                  { name: "All", icon: LayoutGrid },
-                  { name: "Car", icon: CarFront },
-                  { name: "Bike", icon: Bike },
-                ].map((item) => {
-                  const Icon = item.icon;
-                  const active = type === item.name;
+                    <ArrowUpRight className="text-red-400" size={22} />
+                  </div>
 
-                  return (
-                    <button
-                      key={item.name}
-                      onClick={() => setType(item.name)}
-                      className={`buy-type-btn flex items-center gap-2 rounded-xl border px-5 py-3 text-sm font-bold backdrop-blur-md ${
-                        active
-                          ? "border-red-500 bg-red-600/25 text-red-300 shadow-[0_0_22px_rgba(229,9,47,.2)]"
-                          : "border-white/20 bg-black/40 text-gray-200 hover:border-red-500/60 hover:text-white"
-                      }`}
-                    >
-                      <Icon size={19} />
-                      {item.name === "All"
-                        ? "All Vehicles"
-                        : item.name === "Car"
-                          ? "Cars"
-                          : "Bikes"}
-                    </button>
-                  );
-                })}
+                  <div className="carbyke-info-text mt-8">
+                    <p className="text-xs font-bold uppercase tracking-[.25em] text-red-400">
+                      More Than Just A Ride
+                    </p>
+
+                    <h2 className="mt-3 text-3xl font-black leading-tight text-white sm:text-4xl">
+                      Your Journey.
+                      <br />
+                      <span className="text-red-500">Your Choice.</span>
+                    </h2>
+                  </div>
+
+                  <p className="carbyke-info-text mt-5 text-sm leading-7 text-gray-300">
+                    CARBYKE brings buyers and sellers together in one place.
+                    Explore a wide range of cars and bikes, discover exciting
+                    options and find a vehicle that matches your lifestyle.
+                  </p>
+
+                  <div className="carbyke-info-text mt-7 space-y-4">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-red-500/30 bg-red-600/15 text-red-400">
+                        <CarFront size={18} />
+                      </span>
+                      <div>
+                        <p className="text-sm font-bold text-white">
+                          Explore Vehicles
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          Cars and bikes in one place
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-red-500/30 bg-red-600/15 text-red-400">
+                        <Heart size={18} />
+                      </span>
+                      <div>
+                        <p className="text-sm font-bold text-white">
+                          Find Your Match
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          Discover a ride that fits you
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-red-500/30 bg-red-600/15 text-red-400">
+                        <MapPin size={18} />
+                      </span>
+                      <div>
+                        <p className="text-sm font-bold text-white">
+                          Discover Nearby
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          Explore vehicles by location
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="carbyke-info-text mt-8 border-t border-white/10 pt-5">
+                    <p className="text-xs font-semibold tracking-wide text-gray-400">
+                      FIND IT. LOVE IT. DRIVE IT.
+                    </p>
+                    <p className="mt-1 text-sm font-black tracking-widest text-white">
+                      CARBYKE<span className="text-red-500">.</span>
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* SEARCH BAR */}
-            <div className="buy-reveal relative z-10 mt-10 rounded-2xl border border-white/10 bg-[#121216]/95 p-2 shadow-[0_15px_55px_rgba(0,0,0,.5)] backdrop-blur-2xl md:mt-12">
-              <div className="grid gap-2 md:grid-cols-[1fr_220px_auto]">
+            <div className="buy-reveal relative z-[80] mt-12 overflow-visible rounded-2xl border border-white/10 bg-[#121216]/95 p-2 shadow-[0_15px_55px_rgba(0,0,0,.5)] backdrop-blur-2xl">
+              <div className="relative z-[90] grid gap-2 md:grid-cols-[1fr_220px_auto]">
+                {/* SEARCH INPUT */}
                 <div className="buy-search flex min-w-0 items-center gap-3 rounded-xl border border-transparent bg-[#1b1b21] px-4 transition-all duration-300">
                   <Search size={20} className="shrink-0 text-red-500" />
 
@@ -315,28 +555,84 @@ function BuyPage({
                   )}
                 </div>
 
-                <div className="flex items-center gap-3 rounded-xl border border-transparent bg-[#1b1b21] px-4 transition-all duration-300 focus-within:border-red-500/60">
-                  <MapPin size={19} className="shrink-0 text-red-500" />
-
-                  <select
-                    defaultValue="Delhi NCR"
+                {/* CUSTOM LOCATION DROPDOWN */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setLocationOpen((prev) => !prev)}
+                    aria-expanded={locationOpen}
                     aria-label="Select location"
-                    className="w-full cursor-pointer bg-transparent py-4 text-sm font-medium text-white outline-none"
+                    className={`group flex w-full items-center gap-3 rounded-xl border px-4 py-4 text-left transition-all duration-500 ${
+                      locationOpen
+                        ? "border-red-500 bg-[#1b1116] shadow-[0_0_25px_rgba(229,9,47,.18)]"
+                        : "border-white/10 bg-[#1b1b21] hover:border-red-500/60"
+                    }`}
                   >
-                    <option>Delhi NCR</option>
-                    <option>Gurugram</option>
-                    <option>Noida</option>
-                    <option>Faridabad</option>
-                    <option>New Delhi</option>
-                    <option>All Locations</option>
-                  </select>
+                    <MapPin
+                      size={19}
+                      className="shrink-0 text-red-500 transition-transform duration-300 group-hover:scale-110"
+                    />
+
+                    <span className="min-w-0 flex-1 truncate text-sm font-medium text-white">
+                      {selectedLocation}
+                    </span>
+
+                    <ChevronRight
+                      size={17}
+                      className={`text-gray-400 transition-transform duration-300 ${
+                        locationOpen ? "rotate-90 text-red-400" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {locationOpen && (
+                    <div className="location-dropdown absolute left-0 top-[calc(100%+10px)] z-[999] w-full min-w-[230px] overflow-hidden rounded-2xl border border-red-500/30 bg-[#0b0b0f] p-2 shadow-[0_20px_60px_rgba(0,0,0,.85)]">
+                      <div className="border-b border-white/10 px-3 py-3">
+                        <p className="text-[10px] font-extrabold uppercase tracking-[.2em] text-red-400">
+                          Choose Your Location
+                        </p>
+                        <p className="mt-1 text-xs text-gray-400">
+                          Find vehicles around your preferred city.
+                        </p>
+                      </div>
+
+                      <div className="mt-2 grid gap-1">
+                        {locations.map((location) => (
+                          <button
+                            key={location}
+                            type="button"
+                            onClick={() => {
+                              setSelectedLocation(location);
+                              setLocationOpen(false);
+                            }}
+                            className={`location-option flex items-center justify-between rounded-xl px-3 py-3 text-left text-sm ${
+                              selectedLocation === location
+                                ? "bg-red-600/20 font-bold text-red-400"
+                                : "text-gray-300 hover:bg-red-600/10 hover:text-white"
+                            }`}
+                          >
+                            <span className="flex items-center gap-3">
+                              <MapPin size={15} className="text-red-500" />
+                              {location}
+                            </span>
+
+                            {selectedLocation === location && (
+                              <span className="text-red-400">✓</span>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
+                {/* SEARCH BUTTON */}
                 <button
                   onClick={() =>
-                    document
-                      .getElementById("listing-grid")
-                      ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                    document.getElementById("listing-grid")?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    })
                   }
                   className="group flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-red-600 to-red-800 px-8 py-4 text-sm font-extrabold text-white shadow-[0_5px_20px_rgba(229,9,47,.25)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(229,9,47,.4)] active:scale-95"
                 >
@@ -354,69 +650,13 @@ function BuyPage({
 
         {/* LISTINGS SECTION */}
         <div className="mx-auto max-w-[1500px] px-4 pb-16 pt-8 sm:px-6 lg:px-8">
-          {/* TOP TOOLBAR */}
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/10 bg-[#101014]/90 p-4 shadow-xl backdrop-blur-xl">
-            <div>
-              <p className="text-base font-extrabold text-white">
-                {page === "Wishlist" ? "Your Wishlist" : "Explore Vehicles"}
-              </p>
-
-              <p className="mt-1 text-xs text-gray-500">
-                {page === "Wishlist"
-                  ? "Your saved vehicles"
-                  : `Showing ${filtered.length} vehicle${filtered.length === 1 ? "" : "s"} available`}
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              <label className="hidden text-xs text-gray-400 sm:block">
-                Sort by:
-              </label>
-
-              <select
-                value={sort}
-                onChange={(e) => setSort(e.target.value)}
-                className="buy-field mt-0 w-40 py-2.5 text-xs"
-              >
-                <option>Latest First</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Lowest KM</option>
-              </select>
-
-              <button
-                onClick={() => setView("grid")}
-                aria-label="Grid view"
-                className={`rounded-lg border p-2.5 transition-all duration-300 hover:scale-105 ${
-                  view === "grid"
-                    ? "border-red-500/50 bg-red-600/15 text-red-400"
-                    : "border-white/10 text-gray-400 hover:border-red-500/50 hover:text-white"
-                }`}
-              >
-                <LayoutGrid size={17} />
-              </button>
-
-              <button
-                onClick={() => setView("list")}
-                aria-label="List view"
-                className={`rounded-lg border p-2.5 transition-all duration-300 hover:scale-105 ${
-                  view === "list"
-                    ? "border-red-500/50 bg-red-600/15 text-red-400"
-                    : "border-white/10 text-gray-400 hover:border-red-500/50 hover:text-white"
-                }`}
-              >
-                <List size={17} />
-              </button>
-            </div>
-          </div>
-
           {/* FILTER BUTTON */}
           <div className="mb-4 flex justify-start">
             <button
               onClick={() => setShowFilters((prev) => !prev)}
               aria-expanded={showFilters}
               aria-controls="buy-filter-panel"
-              className={`group flex items-center gap-3 rounded-xl border px-5 py-3 text-sm font-extrabold transition-all duration-300 hover:-translate-y-0.5 active:scale-95 ${
+              className={` group flex items-center gap-3 rounded-xl border px-5 py-3 text-sm font-extrabold transition-all duration-300 hover:-translate-y-0.5 active:scale-95 ${
                 showFilters
                   ? "border-red-500 bg-red-600/15 text-red-400 shadow-[0_0_20px_rgba(229,9,47,.12)]"
                   : "border-white/10 bg-[#151519] text-gray-200 hover:border-red-500/60 hover:text-red-400"
@@ -459,7 +699,24 @@ function BuyPage({
                   </button>
                 </div>
 
+                {/* SORT OPTION MOVED INSIDE FILTERS */}
                 <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-gray-300">
+                  Sort By
+                </label>
+
+                <select
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                  className="buy-field"
+                >
+                  <option>Latest First</option>
+                  <option>Price: Low to High</option>
+                  <option>Price: High to Low</option>
+                  <option>Lowest KM</option>
+                </select>
+
+                {/* PRICE */}
+                <label className="mb-2 mt-6 block text-xs font-bold uppercase tracking-wider text-gray-300">
                   Price Range
                 </label>
 
@@ -480,6 +737,7 @@ function BuyPage({
                   </span>
                 </div>
 
+                {/* BRAND */}
                 <label className="mb-2 mt-6 block text-xs font-bold uppercase tracking-wider text-gray-300">
                   Brand
                 </label>
@@ -497,6 +755,7 @@ function BuyPage({
                     ))}
                 </select>
 
+                {/* FUEL */}
                 <label className="mb-2 mt-5 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-300">
                   <Fuel size={14} className="text-red-500" />
                   Fuel Type
@@ -515,6 +774,7 @@ function BuyPage({
                   <option>Hybrid</option>
                 </select>
 
+                {/* VEHICLE TYPE */}
                 <label className="mb-2 mt-5 block text-xs font-bold uppercase tracking-wider text-gray-300">
                   Vehicle Type
                 </label>
@@ -529,6 +789,7 @@ function BuyPage({
                   <option value="Bike">Bikes</option>
                 </select>
 
+                {/* YEAR */}
                 <label className="mb-2 mt-5 block text-xs font-bold uppercase tracking-wider text-gray-300">
                   Year
                 </label>
@@ -549,6 +810,7 @@ function BuyPage({
                   </select>
                 </div>
 
+                {/* TRANSMISSION */}
                 <label className="mb-2 mt-5 block text-xs font-bold uppercase tracking-wider text-gray-300">
                   Transmission
                 </label>
@@ -559,6 +821,7 @@ function BuyPage({
                   <option>Automatic</option>
                 </select>
 
+                {/* OWNERSHIP */}
                 <label className="mb-2 mt-5 block text-xs font-bold uppercase tracking-wider text-gray-300">
                   Ownership
                 </label>
@@ -569,6 +832,7 @@ function BuyPage({
                   <option>2nd Owner</option>
                 </select>
 
+                {/* LOCATION FILTER */}
                 <label className="mb-2 mt-5 block text-xs font-bold uppercase tracking-wider text-gray-300">
                   Location
                 </label>
@@ -581,6 +845,7 @@ function BuyPage({
                   <option>New Delhi</option>
                 </select>
 
+                {/* APPLY FILTERS */}
                 <button
                   onClick={() => setShowFilters(false)}
                   className="mt-6 w-full rounded-xl bg-gradient-to-r from-red-600 to-red-800 py-3 text-sm font-extrabold text-white shadow-lg shadow-red-900/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-red-600/30 active:scale-95"
@@ -633,6 +898,7 @@ function BuyPage({
                 </div>
               )}
 
+              {/* PAGINATION */}
               {filtered.length > 0 && (
                 <div className="mt-8 flex items-center justify-center gap-2">
                   <button className="page-btn" disabled>

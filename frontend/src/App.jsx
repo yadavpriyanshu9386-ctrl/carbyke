@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
+
 import { vehicles } from "./data/vehicles.js";
+
 import VehicleModal from "./components/vehicles/VehicleModal.jsx";
 import SellPage from "./pages/SellPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
@@ -9,8 +11,10 @@ import ContactPage from "./components/HumBurger/ContactPage.jsx";
 import MyListings from "./pages/MyListings.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
 import BuyPage from "./pages/BuyPage.jsx";
+
 import Navbar from "./components/layout/Navbar.jsx";
 import Footer from "./components/layout/Footer.jsx";
+
 import LoginModal from "./components/auth/LoginModal.jsx";
 
 function App() {
@@ -44,11 +48,27 @@ function App() {
           .toLowerCase()
           .includes(search.toLowerCase()),
     );
-    if (page === "Wishlist") list = list.filter((v) => wishlist.includes(v.id));
-    if (sort === "Price: Low to High") list.sort((a, b) => a.price - b.price);
-    if (sort === "Price: High to Low") list.sort((a, b) => b.price - a.price);
-    if (sort === "Lowest KM") list.sort((a, b) => a.km - b.km);
-    if (sort === "Latest First") list.sort((a, b) => b.year - a.year);
+
+    if (page === "Wishlist") {
+      list = list.filter((v) => wishlist.includes(v.id));
+    }
+
+    if (sort === "Price: Low to High") {
+      list.sort((a, b) => a.price - b.price);
+    }
+
+    if (sort === "Price: High to Low") {
+      list.sort((a, b) => b.price - a.price);
+    }
+
+    if (sort === "Lowest KM") {
+      list.sort((a, b) => a.km - b.km);
+    }
+
+    if (sort === "Latest First") {
+      list.sort((a, b) => b.year - a.year);
+    }
+
     return list;
   }, [type, brand, fuel, maxPrice, search, sort, page, wishlist]);
 
@@ -56,11 +76,14 @@ function App() {
     setWishlist((old) =>
       old.includes(id) ? old.filter((x) => x !== id) : [...old, id],
     );
+
     setToast(
       wishlist.includes(id) ? "Removed from wishlist" : "Added to wishlist",
     );
+
     setTimeout(() => setToast(""), 1800);
   };
+
   const navigate = (p) => {
     if (!isLoggedIn && (p === "Wishlist" || p === "My Listings")) {
       setToast("Please login to continue");
@@ -78,11 +101,15 @@ function App() {
       setType("All");
     }
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
-    <div className="min-h-screen bg-ink text-slate-100">
+    <div className="min-h-screen bg-black/10 text-slate-100">
+      {/* Navbar - kept outside the paper sheet */}
       <Navbar
         page={page}
         navigate={navigate}
@@ -93,55 +120,68 @@ function App() {
         isLoggedIn={isLoggedIn}
       />
 
-      {page === "Home" && (
-        <HomePage navigate={navigate} setSearch={setSearch} />
-      )}
+      {/* All website pages inside one paper sheet */}
 
-      {(page === "Buy" || page === "Wishlist") && (
-        <BuyPage
-          page={page}
-          type={type}
-          setType={setType}
-          search={search}
-          setSearch={setSearch}
-          brand={brand}
-          setBrand={setBrand}
-          fuel={fuel}
-          setFuel={setFuel}
-          maxPrice={maxPrice}
-          setMaxPrice={setMaxPrice}
-          sort={sort}
-          setSort={setSort}
-          view={view}
-          setView={setView}
-          showFilters={showFilters}
-          setShowFilters={setShowFilters}
-          filtered={filtered}
-          wishlist={wishlist}
-          toggleWish={toggleWish}
-          setSelected={setSelected}
-          setToast={setToast}
-          navigate={navigate}
-        />
-      )}
-      {page === "Sell" && (
-        <SellPage
-          sellType={sellType}
-          setSellType={setSellType}
-          submitted={sellSubmitted}
-          setSubmitted={setSellSubmitted}
-        />
-      )}
-      {page === "Rent" && (
-        <RentPage days={rentDays} setDays={setRentDays} vehicles={vehicles} />
-      )}
-      {page === "My Listings" && <MyListings onSell={() => navigate("Sell")} />}
-      {page === "About Us" && <AboutPage />}
-      {page === "Reviews" && <ReviewsPage />}
-      {page === "Contact Us" && <ContactPage />}
+      <main className="relative bg-transparent">
+        {page === "Home" && (
+          <HomePage navigate={navigate} setSearch={setSearch} />
+        )}
+
+        {(page === "Buy" || page === "Wishlist") && (
+          <BuyPage
+            page={page}
+            type={type}
+            setType={setType}
+            search={search}
+            setSearch={setSearch}
+            brand={brand}
+            setBrand={setBrand}
+            fuel={fuel}
+            setFuel={setFuel}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+            sort={sort}
+            setSort={setSort}
+            view={view}
+            setView={setView}
+            showFilters={showFilters}
+            setShowFilters={setShowFilters}
+            filtered={filtered}
+            wishlist={wishlist}
+            toggleWish={toggleWish}
+            setSelected={setSelected}
+            setToast={setToast}
+            navigate={navigate}
+          />
+        )}
+
+        {page === "Sell" && (
+          <SellPage
+            sellType={sellType}
+            setSellType={setSellType}
+            submitted={sellSubmitted}
+            setSubmitted={setSellSubmitted}
+          />
+        )}
+
+        {page === "Rent" && (
+          <RentPage days={rentDays} setDays={setRentDays} vehicles={vehicles} />
+        )}
+
+        {page === "My Listings" && (
+          <MyListings onSell={() => navigate("Sell")} />
+        )}
+
+        {page === "About Us" && <AboutPage />}
+
+        {page === "Reviews" && <ReviewsPage />}
+
+        {page === "Contact Us" && <ContactPage />}
+      </main>
 
       <Footer navigate={navigate} />
 
+      {/* Modals and notifications stay outside the paper sheet */}
       {selected && (
         <VehicleModal
           vehicle={selected}
@@ -150,9 +190,11 @@ function App() {
           onClose={() => setSelected(null)}
         />
       )}
+
       {loginOpen && (
         <LoginModal onClose={() => setLoginOpen(false)} setToast={setToast} />
       )}
+
       {toast && (
         <div
           role="status"
