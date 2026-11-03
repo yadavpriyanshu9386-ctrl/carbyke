@@ -179,8 +179,7 @@ function App() {
         {page === "Contact Us" && <ContactPage />}
       </main>
 
-      <Footer navigate={navigate} />
-
+      {page !== "About Us" && <Footer navigate={navigate} />}
       {/* Modals and notifications stay outside the paper sheet */}
       {selected && (
         <VehicleModal
